@@ -12,13 +12,13 @@ app.set('views', 'views');
 const port = parseInt(process.env.PORT) || 5000;
 
 app.get('/', (req, res) => {
-  const payload = {
-    pageTitle: 'Tweeter',
-  };
+    const payload = {
+        pageTitle: 'Tweeter',
+    };
 
-  res.status(200).render('home', payload);
+    res.status(200).render('home', payload);
 });
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`.yellow.bold);
+    console.log(`Server listening on port ${port}`.yellow.bold);
 });
