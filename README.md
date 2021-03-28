@@ -1,6 +1,7 @@
 # Tweeter
 
 [![Build](https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg)](https://github.com/don-tay/tweeter/actions/workflows/build.yaml)
+
 Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and socket.io.
 
 ## Getting started
