@@ -1,0 +1,5 @@
+node_modules
+dist
+coverage
+public
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
