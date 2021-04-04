@@ -11,7 +11,7 @@ Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and so
 Global dependencies are listed as follows. See sections below for installation instructions for each dependency.
 
 -   NodeJS v14.16.0
--   yarn 2 (berry)
+-   Yarn 2 (berry)
 -   MongoDB 4.4
 
 ### NodeJS Runtime Environment
