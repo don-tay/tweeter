@@ -1,3 +1,4 @@
+import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import 'colors';
@@ -10,6 +11,8 @@ const app = express();
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
+
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', router);
 
