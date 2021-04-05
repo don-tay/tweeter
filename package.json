@@ -3,6 +3,10 @@
     "version": "1.0.0",
     "description": "Twitter look-a-like",
     "main": "dist/server.js",
+    "engines": {
+        "yarn": "2.x",
+        "node": "14.x"
+    },
     "author": "Don",
     "license": "MIT",
     "scripts": {
