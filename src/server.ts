@@ -12,6 +12,9 @@ const app = express();
 app.set('view engine', 'pug');
 app.set('views', 'views');
 
+// Express json parser
+app.use(express.json());
+
 app.use(express.static(path.join(__dirname, '../public')));
 
 app.use('/', router);
