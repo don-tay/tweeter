@@ -39,7 +39,7 @@ authRouter.post(
     '/login',
     asyncHandler(async (req, res, next) => {
         const { loginUsername, loginPassword } = req.body;
-        const payload = { loginUsername: loginUsername.trim(), loginPassword };
+        const payload = { loginUsername: loginUsername?.trim(), loginPassword };
         await validateModel(LoginUserDto, payload);
         res.status(200).render('login', payload);
     }),
@@ -53,7 +53,7 @@ authRouter.post(
     '/register',
     asyncHandler(async (req, res, next) => {
         const { firstName, lastName, username, email, password } = req.body;
-        const payload = { firstName: firstName.trim(), lastName: lastName.trim(), username: username.trim(), email: email.trim(), password };
+        const payload = { firstName: firstName?.trim(), lastName: lastName?.trim(), username: username?.trim(), email: email?.trim(), password };
         await validateModel(RegisterUserDto, payload);
         res.status(200).render('register', payload);
     }),
