@@ -35,11 +35,15 @@ authRouter.get('/login', (req, res, next) => {
     res.status(200).render('login');
 });
 
-authRouter.post('/login', (req, res, next) => {
-    const { loginUsername, loginPassword } = req.body;
-    const payload = { loginUsername: loginUsername.trim(), loginPassword };
-    res.status(200).render('login', payload);
-});
+authRouter.post(
+    '/login',
+    asyncHandler(async (req, res, next) => {
+        const { loginUsername, loginPassword } = req.body;
+        const payload = { loginUsername: loginUsername.trim(), loginPassword };
+        await validateModel(LoginUserDto, payload);
+        res.status(200).render('login', payload);
+    }),
+);
 
 authRouter.get('/register', (req, res, next) => {
     res.status(200).render('register');
