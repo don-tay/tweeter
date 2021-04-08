@@ -3,8 +3,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import 'colors';
 import { router } from './routes/index.route';
+import { initDb } from './database';
 
 dotenv.config({ path: 'config/.env' });
+
+// Connect to DB
+initDb();
 
 const app = express();
 
