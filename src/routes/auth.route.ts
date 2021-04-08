@@ -25,10 +25,10 @@ class RegisterUserDto {
 class LoginUserDto {
     @IsString()
     @IsNotEmpty()
-    loginUsername: string;
+    username: string;
     @IsString()
     @IsNotEmpty()
-    loginPassword: string;
+    password: string;
 }
 
 authRouter.get('/login', (req, res, next) => {
@@ -38,9 +38,14 @@ authRouter.get('/login', (req, res, next) => {
 authRouter.post(
     '/login',
     asyncHandler(async (req, res, next) => {
-        const { loginUsername, loginPassword } = req.body;
-        const payload = { loginUsername: loginUsername?.trim(), loginPassword };
-        await validateModel(LoginUserDto, payload);
+        const { username, password } = req.body;
+        const payload = { username: username?.trim(), password };
+        try {
+            await validateModel(LoginUserDto, payload);
+        } catch (e) {
+            const errorPayload = { ...payload, errorMessage: e.message };
+            return res.status(400).render('login', errorPayload);
+        }
         res.status(200).render('login', payload);
     }),
 );
@@ -54,7 +59,13 @@ authRouter.post(
     asyncHandler(async (req, res, next) => {
         const { firstName, lastName, username, email, password } = req.body;
         const payload = { firstName: firstName?.trim(), lastName: lastName?.trim(), username: username?.trim(), email: email?.trim(), password };
-        await validateModel(RegisterUserDto, payload);
-        res.status(200).render('register', payload);
+        try {
+            await validateModel(RegisterUserDto, payload);
+        } catch (e) {
+            const errorMessage = e.message;
+            const errorPayload = { ...payload, errorMessage };
+            return res.status(400).render('register', errorPayload);
+        }
+        res.status(200).render('login', payload);
     }),
 );
