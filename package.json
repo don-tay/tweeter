@@ -4,7 +4,7 @@
     "description": "Twitter look-a-like",
     "main": "dist/server.js",
     "engines": {
-        "yarn": "2.x",
+        "yarn": "2.4.x",
         "node": "14.x"
     },
     "author": "Don",
