@@ -53,7 +53,7 @@ authRouter.post(
             const errorPayload = { ...payload, errorMessage: e.message };
             return res.status(400).render('login', errorPayload);
         }
-        res.status(200).render('login', payload);
+        res.status(200).render('home');
     }),
 );
 
