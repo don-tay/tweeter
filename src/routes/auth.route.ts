@@ -1,24 +1,31 @@
-import { IsEmail, IsNotEmpty, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import express from 'express';
-import { PASSWORD_REGEX } from '../constants';
+import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { validateModel } from '../utilities';
 export const authRouter = express.Router();
 
 class RegisterUserDto {
     @IsString()
-    @IsNotEmpty()
+    @IsNotEmpty({ message: 'First name is compulsory.' })
     firstName: string;
+    @IsOptional()
     @IsString()
     @IsNotEmpty()
     lastName: string;
     @IsString()
-    @Length(5, 20)
+    @Length(5, 15)
+    @Matches(USERNAME_REGEX, {
+        message: 'Username must consist of alphanumeric characters, underscores or hyphens, and be between 5-15 characters long.',
+    })
     username: string;
     @IsEmail()
     email: string;
     @Length(8, 25)
-    @Matches(PASSWORD_REGEX)
+    @Matches(PASSWORD_REGEX, {
+        message:
+            'Password must fulfil the following: at least 1 alphanumeric character, 1 special character in "!@#$%^&*" and be 8 to 25 characters long.',
+    })
     password: string;
 }
 
