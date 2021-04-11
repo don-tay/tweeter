@@ -2,24 +2,23 @@ extends layouts/login-layout.pug
 
 block content
     .loginContainer
-        h1 Register 
-        form#registerForm(method="post", onSubmit="event.preventDefault(); validateForm();")
-
+        h1 Register
+        form#registerForm(method='post', onSubmit='event.preventDefault(); validateForm();')
             p.errorMessage #{errorMessage}
 
             //- Note value fields is for repopulation if server-side validation fails
-            input(type="text", name="firstName", placeholder="First name", value=firstName, required="")
-            input(type="text", name="lastName", placeholder="Last name", value=lastName, required="")
-            input(type="text", name="username", placeholder="Username", value=username, required="")
-            input(type="email", name="email", placeholder="Email", value=email, required="")
-            input#password(type="password", name="password", placeholder="Password", required="")
-            input#passwordConf(type="password", name="passwordConf", placeholder="Confirm password" required="")
-            input(type="submit", value="Register")
+            input(type='text', name='firstName', placeholder='First name', value=firstName, required='')
+            input(type='text', name='lastName', placeholder='Last name', value=lastName, required='')
+            input(type='text', name='username', placeholder='Username', value=username, required='')
+            input(type='email', name='email', placeholder='Email', value=email, required='')
+            input#password(type='password', name='password', placeholder='Password', required='')
+            input#passwordConf(type='password', name='passwordConf', placeholder='Confirm password', required='')
+            input(type='submit', value='Register')
 
-        a(href="/auth/login") Already have an account? Login here.
+        a(href='/auth/login') Already have an account? Login here.
 
     script.
-        const passwordValue = document.getElementById('password').value;
-        const passwordConfValue = document.getElementById('passwordConf').value;
-        const form = document.getElementById('registerForm');
-        const validateForm = () => (passwordValue === passwordConfValue) ? form.submit() : alert('Passwords do not match. Please try again.')
+        const passwordValue = document.getElementById("password").value;
+        const passwordConfValue = document.getElementById("passwordConf").value;
+        const form = document.getElementById("registerForm");
+        const validateForm = () => (passwordValue === passwordConfValue ? form.submit() : alert("Passwords do not match. Please try again."));
