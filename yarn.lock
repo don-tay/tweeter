@@ -143,23 +143,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mongodb@npm:*, @types/mongodb@npm:^3.5.27":
+"@types/mongodb@npm:^3.5.27":
   version: 3.6.12
   resolution: "@types/mongodb@npm:3.6.12"
   dependencies:
     "@types/bson": "*"
     "@types/node": "*"
   checksum: 7e41e42a941a5c07cc45f83722e617f1e96942b27cabae8f06dd253ae86b420c1ca5c75e1de7bfbce787bb703714bc297bef45215ef1275815e8d355e03bc27c
-  languageName: node
-  linkType: hard
-
-"@types/mongoose@npm:^5.10.4":
-  version: 5.10.4
-  resolution: "@types/mongoose@npm:5.10.4"
-  dependencies:
-    "@types/mongodb": "*"
-    "@types/node": "*"
-  checksum: 79b271db6def51ef62718eb07aa54f9e18239e2a5657e84764c0445a8331b170896ec035046cb6bf566ec6dea8e3b6cac91f28a4d85f357827da680b26239ace
   languageName: node
   linkType: hard
 
@@ -2915,7 +2905,6 @@ resolve@^1.15.1:
   dependencies:
     "@prettier/plugin-pug": ^1.13.5
     "@types/express": ^4.17.11
-    "@types/mongoose": ^5.10.4
     class-transformer: ^0.4.0
     class-validator: ^0.13.1
     colors: ^1.4.0
