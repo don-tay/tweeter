@@ -1,8 +1,9 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, isEmpty, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import express from 'express';
 import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
 import { asyncHandler } from '../middlewares/asyncHandler.middleware';
 import { validateModel } from '../utilities';
+import { User } from '../schemas/user.schema';
 export const authRouter = express.Router();
 
 class RegisterUserDto {
@@ -73,6 +74,21 @@ authRouter.post(
             const errorPayload = { ...payload, errorMessage };
             return res.status(400).render('register', errorPayload);
         }
+
+        // check if username or email already exist, and handle
+        const user = await User.findOne({ $or: [{ username }, { email }] });
+        let errorMessage = '';
+        if (user.username === username) {
+            errorMessage += `Username '${username}' already exist. Have you registered before?`;
+        }
+        if (user.email === email) {
+            errorMessage += `Email '${email}' already exist. Have you registered before?`;
+        }
+        if (isNotEmpty(errorMessage)) {
+            const errorPayload = { ...payload, errorMessage };
+            return res.status(400).render('register', errorPayload);
+        }
+
         res.status(200).render('login', payload);
     }),
 );
