@@ -8,6 +8,7 @@ router.use('/auth', authRouter);
 router.use('/', requireLogin, (req, res) => {
     const payload = {
         pageTitle: 'Tweeter',
+        userLoggedIn: req.session?.user,
     };
 
     res.status(200).render('home', payload);

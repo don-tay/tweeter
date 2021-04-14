@@ -1,8 +1,10 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import express from 'express';
+import bcrypt from 'bcrypt';
 import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
-import { asyncHandler } from '../middlewares/asyncHandler.middleware';
+import { asyncHandler } from '../middlewares';
 import { validateModel } from '../utilities';
+import { User } from '../schemas/user.schema';
 export const authRouter = express.Router();
 
 class RegisterUserDto {
@@ -65,7 +67,15 @@ authRouter.post(
     '/register',
     asyncHandler(async (req, res, next) => {
         const { firstName, lastName, username, email, password } = req.body;
-        const payload = { firstName: firstName?.trim(), lastName: lastName?.trim(), username: username?.trim(), email: email?.trim(), password };
+        const payload = {
+            firstName: firstName?.trim(),
+            lastName: lastName?.trim(),
+            username: username?.trim(),
+            email: email?.trim(),
+            password,
+        };
+
+        // TODO: port validation logic from class-validator to mongoose
         try {
             await validateModel(RegisterUserDto, payload);
         } catch (e) {
@@ -73,6 +83,29 @@ authRouter.post(
             const errorPayload = { ...payload, errorMessage };
             return res.status(400).render('register', errorPayload);
         }
-        res.status(200).render('login', payload);
+
+        // check if username or email already exist, and handle
+        const user = await User.findOne({ $or: [{ username }, { email }] }, { projection: [username, email] })
+            .lean()
+            .exec();
+
+        let errorMessage = '';
+        if (user?.username === payload.username) {
+            errorMessage += `Username '${username}' has already been used. Have you registered before?\n`;
+        }
+        if (user?.email === payload.email) {
+            errorMessage += `Email '${email}' has already been used. Have you registered before?\n`;
+        }
+        if (isNotEmpty(errorMessage)) {
+            const errorPayload = { ...payload, errorMessage };
+            return res.status(400).render('register', errorPayload);
+        }
+
+        // hash password
+        payload.password = await bcrypt.hash(password, 10);
+        const newUser = await User.create(payload);
+        req.session.user = newUser;
+
+        res.status(200).redirect('/');
     }),
 );
