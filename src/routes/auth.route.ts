@@ -103,8 +103,9 @@ authRouter.post(
 
         // hash password
         payload.password = await bcrypt.hash(password, 10);
-        await User.create(payload);
+        const newUser = await User.create(payload);
+        req.session.user = newUser;
 
-        res.status(200).render('login', payload);
+        res.status(200).redirect('/');
     }),
 );
