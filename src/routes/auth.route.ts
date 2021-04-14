@@ -1,4 +1,4 @@
-import { IsEmail, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsEmail, isEmpty, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
@@ -55,7 +55,25 @@ authRouter.post(
             const errorPayload = { ...payload, errorMessage: e.message };
             return res.status(400).render('login', errorPayload);
         }
-        res.status(200).render('home');
+
+        const user = await User.findOne({ $or: [{ username }, { email: username }] })
+            .lean()
+            .exec();
+
+        if (isEmpty(user)) {
+            const errorPayload = { username: payload.username, errorMessage: 'Username or password is invalid. Please try again.' };
+            return res.status(400).render('login', errorPayload);
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, user?.password);
+
+        if (!isPasswordValid) {
+            const errorPayload = { username: payload.username, errorMessage: 'Username or password is invalid. Please try again.' };
+            return res.status(400).render('login', errorPayload);
+        }
+
+        req.session.user = user;
+        res.status(200).redirect('/');
     }),
 );
 
