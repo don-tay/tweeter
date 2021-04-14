@@ -141,7 +141,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:^4.17.11":
+"@types/express-session@npm:^1.17.3":
+  version: 1.17.3
+  resolution: "@types/express-session@npm:1.17.3"
+  dependencies:
+    "@types/express": "*"
+  checksum: 4ec0442aaba90400ac308849418d49d390d510f34e7164212966a6530a93d3e7aef1b46672a13c8a54945ce17547b4dcba6ebc9263446c0f8ce245df4bbc705e
+  languageName: node
+  linkType: hard
+
+"@types/express@npm:*, @types/express@npm:^4.17.11":
   version: 4.17.11
   resolution: "@types/express@npm:4.17.11"
   dependencies:
@@ -1006,6 +1015,22 @@ __metadata:
   version: 1.8.1
   resolution: "etag@npm:1.8.1"
   checksum: f18341a3c12a554ec46c0d4756bc9cae177e92f25a4ebd9ceefebf0ee448b675972fc110879f22b1bf514174713921ae5de9ff77af2062d422b1085588465a57
+  languageName: node
+  linkType: hard
+
+"express-session@npm:^1.17.1":
+  version: 1.17.1
+  resolution: "express-session@npm:1.17.1"
+  dependencies:
+    cookie: 0.4.0
+    cookie-signature: 1.0.6
+    debug: 2.6.9
+    depd: ~2.0.0
+    on-headers: ~1.0.2
+    parseurl: ~1.3.3
+    safe-buffer: 5.2.0
+    uid-safe: ~2.1.5
+  checksum: f40acdd82f118329de84e419b6e6192564c715a2431325ac1d913a4233d9adef02424e75e951bf9aed85c150d61cddc276e5dc14a5d8f65e19a11ac8c8e3745c
   languageName: node
   linkType: hard
 
@@ -2441,6 +2466,13 @@ fsevents@~2.3.1:
   languageName: node
   linkType: hard
 
+"random-bytes@npm:~1.0.0":
+  version: 1.0.0
+  resolution: "random-bytes@npm:1.0.0"
+  checksum: e60b4e1611b410b16dee4819040b19f787cce83e10f87518d0e0f807f2814b5f432d824740a79712903364ffc963c67ed1acbfb6d54201e9ab28fe80071617c9
+  languageName: node
+  linkType: hard
+
 "range-parser@npm:~1.2.1":
   version: 1.2.1
   resolution: "range-parser@npm:1.2.1"
@@ -2591,6 +2623,13 @@ resolve@^1.15.1:
   version: 5.1.2
   resolution: "safe-buffer@npm:5.1.2"
   checksum: 2708587c1b5e70a5e420714ceb59f30f5791c6e831d39812125a008eca63a4ac18578abd020a0776ea497ff03b4543f2b2a223a7b9073bf2d6c7af9ec6829218
+  languageName: node
+  linkType: hard
+
+"safe-buffer@npm:5.2.0":
+  version: 5.2.0
+  resolution: "safe-buffer@npm:5.2.0"
+  checksum: e513079353a235749e64dc3b1ade741caf651c09d1291ee826e68d42c08913dcd2c76b291dd23979b0fd0bd551d99f4a3d8cc05aef4e9c75bebf6cbbd310b129
   languageName: node
   linkType: hard
 
@@ -3003,12 +3042,14 @@ resolve@^1.15.1:
     "@prettier/plugin-pug": ^1.13.5
     "@types/bcrypt": ^3.0.1
     "@types/express": ^4.17.11
+    "@types/express-session": ^1.17.3
     bcrypt: ^5.0.1
     class-transformer: ^0.4.0
     class-validator: ^0.13.1
     colors: ^1.4.0
     dotenv: ^8.2.0
     express: ^4.17.1
+    express-session: ^1.17.1
     mongoose: ^5.12.3
     morgan: ^1.10.0
     nodemon: ^2.0.7
@@ -3062,6 +3103,15 @@ typescript@^4.1.3:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: a8956044aabf730699bcc3c2475efdd3f35e509329325cf60b4989761d4c2188e2c474183e2cf92b8c201fcf976814a5a16f144508b2a832643c4f972d0ab803
+  languageName: node
+  linkType: hard
+
+"uid-safe@npm:~2.1.5":
+  version: 2.1.5
+  resolution: "uid-safe@npm:2.1.5"
+  dependencies:
+    random-bytes: ~1.0.0
+  checksum: 3babb99505759403264600665e7e639ac8ab4a5e608bcc9442e35a59bc72c6c4c0e305de70612b7e3ab4866d5e3adeeb419a22f011b64d445039b947a33824ee
   languageName: node
   linkType: hard
 

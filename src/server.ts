@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import 'colors';
 import morgan from 'morgan';
+import session from 'express-session';
 import { router } from './routes/index.route';
 import { initDb } from './database';
 
@@ -21,6 +22,13 @@ if (process.env.NODE_ENV === 'development') {
     app.use(morgan('dev'));
 }
 
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: true,
+        saveUninitialized: false,
+    }),
+);
 // Express json parser
 app.use(express.json());
 // Express parser to read x-www-form-urlencoded req types
