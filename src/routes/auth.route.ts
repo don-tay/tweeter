@@ -67,6 +67,8 @@ authRouter.post(
     asyncHandler(async (req, res, next) => {
         const { firstName, lastName, username, email, password } = req.body;
         const payload = { firstName: firstName?.trim(), lastName: lastName?.trim(), username: username?.trim(), email: email?.trim(), password };
+
+        // TODO: port validation logic from class-validator to mongoose
         try {
             await validateModel(RegisterUserDto, payload);
         } catch (e) {
@@ -76,18 +78,23 @@ authRouter.post(
         }
 
         // check if username or email already exist, and handle
-        const user = await User.findOne({ $or: [{ username }, { email }] });
+        const user = await User.findOne({ $or: [{ username }, { email }] }, { projection: [username, email] })
+            .lean()
+            .exec();
+
         let errorMessage = '';
-        if (user.username === username) {
-            errorMessage += `Username '${username}' already exist. Have you registered before?`;
+        if (user?.username === payload.username) {
+            errorMessage += `Username '${username}' has already been used. Have you registered before?\n`;
         }
-        if (user.email === email) {
-            errorMessage += `Email '${email}' already exist. Have you registered before?`;
+        if (user?.email === payload.email) {
+            errorMessage += `Email '${email}' has already been used. Have you registered before?\n`;
         }
         if (isNotEmpty(errorMessage)) {
             const errorPayload = { ...payload, errorMessage };
             return res.status(400).render('register', errorPayload);
         }
+
+        await User.create(payload);
 
         res.status(200).render('login', payload);
     }),
