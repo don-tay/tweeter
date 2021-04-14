@@ -2,7 +2,7 @@ import { IsEmail, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches 
 import express from 'express';
 import bcrypt from 'bcrypt';
 import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
-import { asyncHandler } from '../middlewares/asyncHandler.middleware';
+import { asyncHandler } from '../middlewares';
 import { validateModel } from '../utilities';
 import { User } from '../schemas/user.schema';
 export const authRouter = express.Router();

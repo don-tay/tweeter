@@ -29,6 +29,7 @@ app.use(
         saveUninitialized: false,
     }),
 );
+
 // Express json parser
 app.use(express.json());
 // Express parser to read x-www-form-urlencoded req types
