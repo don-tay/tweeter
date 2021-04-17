@@ -1,15 +1,13 @@
 <p align="center">
     <span>
-    <i class="fas fa-dove" width="200px""></i>
-    <h2 align="center">Tweeter</h2>
+        <img src="public/assets/flamingo.svg"></img> 
+        <h2 align="center">Tweeter</h2>
     </span>
     <p align="center">Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and socket.io.</p>
 </p>
 <p align="center">
     <img alt="Build Passing" src="https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg" />
 </p>
-
-<script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'></script>
 
 ## Getting started
 
