@@ -12,10 +12,20 @@ html(lang='en')
             integrity='sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l',
             crossorigin='anonymous'
         )
+        link(rel='stylesheet', href='/css/main.css')
 
     body
-        block content
+        .wrapper
+            .row
+                nav.col-2
+                    span Navbar
+                .mainSectionContainer.col-10.col-md-8.col-lg-6
+                    block content
 
+                .d-none.d-md-block.col-md-2.col-lg-4
+                    span Third Column
+
+        script(src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous')
         script(
             src='https://code.jquery.com/jquery-3.6.0.min.js',
             integrity='sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=',
