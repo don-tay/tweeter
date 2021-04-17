@@ -1,6 +1,3 @@
-<script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'>
-</script>
-
 <p align="center">
     <span>
     <i class="fas fa-dove" width="200px""></i>
@@ -11,6 +8,8 @@
 <p align="center">
     <img alt="Build Passing" src="https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg" />
 </p>
+
+<script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'></script>
 
 ## Getting started
 
