@@ -127,3 +127,9 @@ authRouter.post(
         res.status(200).redirect('/');
     }),
 );
+
+authRouter.get('/logout', (req, res, next) => {
+    req.session?.destroy(() => {
+        res.status(200).redirect('/');
+    });
+});
