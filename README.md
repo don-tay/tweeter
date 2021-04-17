@@ -1,8 +1,18 @@
-# Tweeter
+<head>
+    <script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'>
+    </script>
+</head>
 
-[![Build](https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg)](https://github.com/don-tay/tweeter/actions/workflows/build.yaml)
-
-Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and socket.io.
+<p align="center">
+    <span>
+    <i class="fas fa-dove" width="200px""></i>
+    <h2 align="center">Tweeter</h2>
+    </span>
+    <p align="center">Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and socket.io.</p>
+</p>
+<p align="center">
+    <img alt="Build Passing" src="https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg" />
+</p>
 
 ## Getting started
 
@@ -10,7 +20,7 @@ Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and so
 
 Global dependencies are listed as follows. See sections below for installation instructions for each dependency.
 
--   NodeJS v14.16.0
+-   NodeJS v14.16.1
 -   Yarn 2 (berry)
 -   MongoDB 4.4
 
@@ -21,9 +31,19 @@ There are 2 methods of downloading the NodeJS runtime environment, as follows:
 1. Using nvm
 2. Direct from NodeJS website
 
+To verify, if NodeJS has been setup, run
+
+```bash
+node -v
+```
+
 #### Using nvm
 
-See [guide](https://github.com/nvm-sh/nvm#installing-and-updating) for installation instruction.
+See [guide](https://github.com/nvm-sh/nvm#installing-and-updating) for installation instruction. Before running the app, run
+
+```bash
+nvm install && nvm use
+```
 
 #### Direct from NodeJS website
 
