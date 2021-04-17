@@ -1,8 +1,6 @@
 <p align="center">
-    <span>
-        <img src="public/assets/flamingo.svg"></img> 
-        <h2 align="center">Tweeter</h2>
-    </span>
+    <img src="public/assets/flamingo.svg" />
+    <h2 align="center">Tweeter</h2>
     <p align="center">Twitter-inspired web platform written in TypeScript, NodeJS, Pug, MongoDB and socket.io.</p>
 </p>
 <p align="center">
