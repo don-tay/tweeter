@@ -1,7 +1,5 @@
-<head>
-    <script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'>
-    </script>
-</head>
+<script src='https://kit.fontawesome.com/104b7bcd63.js', crossorigin='anonymous'>
+</script>
 
 <p align="center">
     <span>
