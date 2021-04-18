@@ -16,7 +16,7 @@ const UserSchema = new mongoose.Schema(
         username: { type: String, required: true, trim: true, unique: true },
         email: { type: String, required: true, trim: true, unique: true },
         password: { type: String, required: true },
-        profilePic: { type: String, default: '/images/defaultProfilePic.png' },
+        profilePic: { type: String, default: '/assets/images/defaultProfilePic.jpeg' },
     },
     {
         timestamps: true,
