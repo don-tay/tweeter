@@ -5,7 +5,7 @@ export const postsRouter = express.Router();
 postsRouter.post(
     '/',
     requireLogin,
-    asyncHandler(async (req, res) => {
+    asyncHandler(async (req, res, next) => {
         const payload = {};
 
         res.status(200).json({});
