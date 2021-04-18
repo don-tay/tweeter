@@ -10,3 +10,14 @@ $('#postTextarea').keyup((event) => {
 
     submitButton.prop('disabled', !value);
 });
+
+$('#submitPostButton').click((event) => {
+    const button = $(event.target);
+    const textbox = $('#postTextarea');
+
+    const data = {
+        content: textbox.val(),
+    };
+
+    $.post('/api/posts', data, (postData, status, xhr) => {});
+});
