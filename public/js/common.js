@@ -19,5 +19,7 @@ $('#submitPostButton').click((event) => {
         content: textbox.val(),
     };
 
-    $.post('/api/posts', data, (postData, status, xhr) => {});
+    $.post('/api/posts', data, (response, status, xhr) => {
+        console.log(response);
+    });
 });
