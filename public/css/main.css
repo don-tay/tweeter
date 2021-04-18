@@ -1,6 +1,7 @@
 /* constant declaration */
 :root {
-    --blue: #1FA2F1;
+    --blue: #1fa2f1;
+    --blueLight: #9bd1f9;
     --buttonHoverBg: #d4edff;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
@@ -64,4 +65,46 @@ nav a:hover {
     align-items: center;
     border-bottom: 1px solid var(--lightGrey);
     flex-shrink: 0;
+}
+
+.postFormContainer {
+    display: flex;
+    padding: var(--spacing);
+    border-bottom: 10px solid rgb(230, 236, 240);
+    flex-shrink: 0;
+}
+
+.userImageContainer {
+    width: 50px;
+    height: 50px;
+}
+
+.userImageContainer img {
+    width: 100%;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.textareaContainer {
+    flex: 1; /* take remaining space in container */
+    padding-left: var(--spacing);
+}
+
+.textareaContainer textarea {
+    width: 100%;
+    border: none;
+    resize: none;
+    font-size: 19px;
+}
+
+#submitPostButton {
+    background-color: var(--blue);
+    color: white;
+    border: none;
+    border-radius: 40%;
+    padding: 7px 15px;
+}
+
+#submitPostButton:disabled {
+    background-color: var(--blueLight);
 }
