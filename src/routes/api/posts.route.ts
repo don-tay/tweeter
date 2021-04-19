@@ -11,6 +11,7 @@ class CreatePostDto {
     content: string;
 }
 
+// TODO: add query params to support limit offset
 postsRouter.get(
     '/',
     requireLogin,
