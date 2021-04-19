@@ -11,6 +11,16 @@ class CreatePostDto {
     content: string;
 }
 
+postsRouter.get(
+    '/',
+    requireLogin,
+    asyncHandler(async (req, res, next) => {
+        // Uses virtual defined in post schema
+        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).exec();
+        res.status(200).json({ data: posts });
+    }),
+);
+
 postsRouter.post(
     '/',
     requireLogin,
@@ -18,9 +28,7 @@ postsRouter.post(
         const { content } = req.body;
         const payload = { content, postedBy: req.session.user };
 
-        const newPost = await Post.create(payload);
-        // populate response data with user information from user collection using newPost's postedBy value.
-        const data = await User.populate(newPost, { path: 'postedBy' });
+        const data = await (await Post.create(payload)).populate('postedBy').execPopulate();
 
         res.status(201).json({ data });
     }),
