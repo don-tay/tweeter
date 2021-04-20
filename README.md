@@ -5,6 +5,8 @@
 </p>
 <p align="center">
     <img alt="Build Passing" src="https://github.com/don-tay/tweeter/actions/workflows/build.yaml/badge.svg" />
+    <a href="https://lgtm.com/projects/g/don-tay/tweeter/alerts/"><img alt="Total alerts" src="https://img.shields.io/lgtm/alerts/g/don-tay/tweeter.svg?logo=lgtm&logoWidth=18"/></a>
+    <a href="https://lgtm.com/projects/g/don-tay/tweeter/context:javascript"><img alt="Language grade: JavaScript" src="https://img.shields.io/lgtm/grade/javascript/g/don-tay/tweeter.svg?logo=lgtm&logoWidth=18"/></a>
 </p>
 
 ## Getting started
