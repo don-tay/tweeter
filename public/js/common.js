@@ -38,7 +38,13 @@ $(document).on('click', '.likeButton', (event) => {
         url: `/api/posts/${postId}/like`,
         type: 'PUT',
         success: (response) => {
-            button.find('span').text(response.data.userLikes.length || '');
+            const { userLikes } = response.data;
+            button.find('span').text(userLikes.length || '');
+            if (userLikes.includes(userLoggedIn._id)) {
+                button.addClass('active');
+            } else {
+                button.removeClass('active');
+            }
         },
     });
 });
@@ -58,6 +64,8 @@ function createPostHtml(postData) {
     } = postData;
     const displayName = firstName + ' ' + lastName;
     const timestamp = timeDifference(new Date(), new Date(createdAt));
+    const likeButtonActiveClass = userLikes.includes(userLoggedIn._id) ? 'active' : '';
+
     return `<div class='post' data-id='${_id}'>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
@@ -78,13 +86,13 @@ function createPostHtml(postData) {
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button>
+                            <div class='postButtonContainer green'>
+                                <button class='retweetButton'>
                                     <i class='fas fa-retweet'></i>
                                 </button>
                             </div>
-                            <div class='postButtonContainer'>
-                                <button class='likeButton'>
+                            <div class='postButtonContainer red'>
+                                <button class='likeButton ${likeButtonActiveClass}'>
                                     <i class='far fa-heart'></i>
                                     <span>${userLikes.length || ''}</span>
                                 </button>

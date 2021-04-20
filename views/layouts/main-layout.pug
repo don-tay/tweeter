@@ -17,6 +17,8 @@ html(lang='en')
         link(rel='stylesheet', href='/css/main.css')
 
     body
+        script.
+            const userLoggedIn = !{ JSON.stringify(userLoggedIn) };
         .wrapper
             .row
                 nav.col-2

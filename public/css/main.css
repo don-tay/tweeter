@@ -2,6 +2,7 @@
 :root {
     --blue: #1fa2f1;
     --blueLight: #9bd1f9;
+    --red: rgb(226, 34, 94);
     --buttonHoverBg: #d4edff;
     --lightGrey: rgb(230, 236, 240);
     --spacing: 15px;
@@ -180,4 +181,8 @@ button span {
     background-color: #d4edff;
     color: var(--blue);
     border-radius: 50%;
+}
+
+.postButtonContainer.red button.active {
+    color: var(--red);
 }
