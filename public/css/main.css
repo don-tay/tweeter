@@ -58,6 +58,12 @@ button {
     color: var(--greyButtonText);
 }
 
+/* clicks on icons and span in a button is not registered. To allow JS event listener to listen only on button. */
+button i,
+button span {
+    pointer-events: none;
+}
+
 .mainSectionContainer {
     padding: 0;
     border-left: 1px solid var(--lightGrey);

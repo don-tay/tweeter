@@ -38,7 +38,7 @@ $(document).on('click', '.likeButton', (event) => {
         url: `/api/posts/${postId}/like`,
         type: 'PUT',
         success: (response) => {
-            console.log(response.data);
+            button.find('span').text(response.data.userLikes.length || '');
         },
     });
 });
@@ -53,6 +53,7 @@ function createPostHtml(postData) {
         postedBy: { username, profilePic, firstName, lastName },
         content,
         createdAt,
+        userLikes,
         _id,
     } = postData;
     const displayName = firstName + ' ' + lastName;
@@ -85,6 +86,7 @@ function createPostHtml(postData) {
                             <div class='postButtonContainer'>
                                 <button class='likeButton'>
                                     <i class='far fa-heart'></i>
+                                    <span>${userLikes.length || ''}</span>
                                 </button>
                             </div>
                         </div>

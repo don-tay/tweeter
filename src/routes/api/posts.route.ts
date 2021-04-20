@@ -37,7 +37,10 @@ postsRouter.post(
     }),
 );
 
-// DESC: Like/dislike post
+/**
+ * @desc: Like/dislike post
+ * @return: { data: { userLikes }}
+ */
 postsRouter.put(
     '/:postId/like',
     asyncHandler(async (req, res, next) => {
@@ -50,15 +53,16 @@ postsRouter.put(
         const session = await mongoose.startSession();
         session.startTransaction();
         // NB: use of brackets [] in options is mongoose syntax to pass mongodb operator dynamically
-        const userPromise = User.findByIdAndUpdate(userId, { [dbOperator]: { postLikes: postId } }, { new: true, session }).exec();
-        const postPromise = Post.findByIdAndUpdate(postId, { [dbOperator]: { userLikes: userId } }, { new: true, session }).exec();
-        const [user, post] = await Promise.all([userPromise, postPromise]);
+        const user = await User.findByIdAndUpdate(userId, { [dbOperator]: { postLikes: postId } }, { new: true, session }).exec();
+        const post = await Post.findByIdAndUpdate(postId, { [dbOperator]: { userLikes: userId } }, { new: true, session }).exec();
         await session.commitTransaction();
         session.endSession();
 
         // Update state of user stored in session
         req.session.user = user;
 
-        res.status(200).json({ data: post });
+        const data = { userLikes: post.userLikes };
+
+        res.status(200).json({ data });
     }),
 );

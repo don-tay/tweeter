@@ -4,6 +4,7 @@ export interface IPost extends mongoose.Document {
     content: string;
     postedBy: string;
     pinned: boolean;
+    userLikes: string[];
 }
 
 const PostSchema = new mongoose.Schema(
