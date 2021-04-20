@@ -27,15 +27,37 @@ $('#submitPostButton').click((event) => {
     });
 });
 
+$(document).on('click', '.likeButton', (event) => {
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button);
+    if (!postId) {
+        return console.error('Post id not found');
+    }
+
+    $.ajax({
+        url: `/api/posts/${postId}/like`,
+        type: 'PUT',
+        success: (response) => {
+            console.log(response.data);
+        },
+    });
+});
+
+function getPostIdFromElement(elem) {
+    const rootElem = elem.hasClass('post') ? elem : elem.closest('.post'); // look for root elem ie. elem with the class 'post'
+    return rootElem.data().id;
+}
+
 function createPostHtml(postData) {
     const {
         postedBy: { username, profilePic, firstName, lastName },
         content,
         createdAt,
+        _id,
     } = postData;
     const displayName = firstName + ' ' + lastName;
     const timestamp = timeDifference(new Date(), new Date(createdAt));
-    return `<div class='post'>
+    return `<div class='post' data-id='${_id}'>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${profilePic}' />
@@ -61,7 +83,7 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button class='likeButton'>
                                     <i class='far fa-heart'></i>
                                 </button>
                             </div>
