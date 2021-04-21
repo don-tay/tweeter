@@ -8,6 +8,7 @@ export interface IUser extends mongoose.Document {
     password: string;
     profilePic?: string;
     postLikes: string[];
+    postRetweets: string[];
 }
 
 const UserSchema = new mongoose.Schema(
@@ -19,6 +20,7 @@ const UserSchema = new mongoose.Schema(
         password: { type: String, required: true },
         profilePic: { type: String, default: '/assets/images/defaultProfilePic.jpeg' },
         postLikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
+        postRetweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Post' }],
     },
     {
         timestamps: true,

@@ -49,6 +49,26 @@ $(document).on('click', '.likeButton', (event) => {
     });
 });
 
+$(document).on('click', '.retweetButton', (event) => {
+    const button = $(event.target);
+    const postId = getPostIdFromElement(button);
+    if (!postId) {
+        return console.error('Post id not found');
+    }
+
+    const data = { postId };
+
+    $.post('/api/posts/retweet', data, (response, status, xhr) => {
+        const { userRetweets } = response.data;
+        button.find('span').text(userRetweets.length || '');
+        if (userRetweets.includes(userLoggedIn._id)) {
+            button.addClass('active');
+        } else {
+            button.removeClass('active');
+        }
+    });
+});
+
 function getPostIdFromElement(elem) {
     const rootElem = elem.hasClass('post') ? elem : elem.closest('.post'); // look for root elem ie. elem with the class 'post'
     return rootElem.data().id;
