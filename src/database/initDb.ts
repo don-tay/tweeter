@@ -9,7 +9,7 @@ export const initDb = async () => {
     });
     // enable query logging in dev
     if (process.env.NODE_ENV === 'development') {
-        conn.set('debug', true);
+        // conn.set('debug', true);
     }
     const { user, host, port, name: dbName } = conn.connection;
     console.log(`Connected to MongoDB host: ${host}:${port} db: ${dbName} user: ${user}`.cyan.underline.bold);

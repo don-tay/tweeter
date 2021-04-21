@@ -68,13 +68,14 @@ postsRouter.put(
 );
 
 /**
- * @desc: Like/dislike post
- * @return: { data: { userLikes }}
+ * @desc: Retweet/delete retweet
+ * @return: { data: { originalPost: Post, retweetPost: Post }}
  */
 postsRouter.post(
     '/retweet',
     asyncHandler(async (req, res, next) => {
         const { postId } = req.body;
+        console.log(postId);
         const { _id: userId, postRetweets } = req.session.user;
         const hasRetweetedPost = postRetweets.includes(postId);
         // TODO: add handler to prevent user from retweeting own post
@@ -82,24 +83,27 @@ postsRouter.post(
         const dbOperator = hasRetweetedPost ? '$pull' : '$addToSet';
 
         const session = await mongoose.startSession();
-        const postDataToCreate = { postedBy: userId, repostData: postId };
+        const postDataToCreate = { postedBy: userId, retweetData: postId };
         session.startTransaction();
         // add/delete userId who retweeted the original post
-        await Post.findByIdAndUpdate(postId, { [dbOperator]: { userRetweets: userId } }, { new: true, session, lean: true }).exec();
+        const originalPost = await Post.findByIdAndUpdate(
+            postId,
+            { [dbOperator]: { userRetweets: userId } },
+            { new: true, session, lean: true },
+        ).exec();
         // NB: use of brackets [] in options is mongoose syntax to pass mongodb operator dynamically
         const user = await User.findByIdAndUpdate(userId, { [dbOperator]: { postRetweets: postId } }, { new: true, session, lean: true }).exec();
-        // upsert ensures every user can retweet at most once
-
+        // upsert acts as 2nd measure (though not necessary, to ensure every user can retweet at most once)
         const retweetPost = hasRetweetedPost
-            ? await Post.findByIdAndDelete(postId).lean().exec()
-            : await Post.findOneAndUpdate(postDataToCreate, postDataToCreate, { upsert: true, session, lean: true });
+            ? await Post.findOneAndDelete(postDataToCreate, { session }).lean().exec()
+            : (await Post.create([postDataToCreate], { session }))[0];
         await session.commitTransaction();
         session.endSession();
 
         // Update state of user stored in session
         req.session.user = user;
 
-        const data = { userRetweets: retweetPost.userRetweets };
+        const data = { originalPost, retweetPost };
 
         res.status(200).json({ data });
     }),

@@ -59,9 +59,10 @@ $(document).on('click', '.retweetButton', (event) => {
     const data = { postId };
 
     $.post('/api/posts/retweet', data, (response, status, xhr) => {
-        const { userRetweets } = response.data;
-        button.find('span').text(userRetweets.length || '');
-        if (userRetweets.includes(userLoggedIn._id)) {
+        const { originalPost, retweetPost } = response.data;
+        console.log(originalPost);
+        button.find('span').text((originalPost.userRetweets && originalPost.userRetweets.length) || '');
+        if (originalPost.userRetweets && originalPost.userRetweets.includes(userLoggedIn._id)) {
             button.addClass('active');
         } else {
             button.removeClass('active');
@@ -80,6 +81,7 @@ function createPostHtml(postData) {
         content,
         createdAt,
         userLikes,
+        userRetweets,
         _id,
     } = postData;
     const displayName = firstName + ' ' + lastName;
@@ -109,6 +111,7 @@ function createPostHtml(postData) {
                             <div class='postButtonContainer green'>
                                 <button class='retweetButton'>
                                     <i class='fas fa-retweet'></i>
+                                    <span>${userRetweets.length || ''}</span>
                                 </button>
                             </div>
                             <div class='postButtonContainer red'>
