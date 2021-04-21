@@ -59,11 +59,15 @@ $(document).on('click', '.retweetButton', (event) => {
     const data = { postId };
 
     $.post('/api/posts/retweet', data, (response, status, xhr) => {
-        const { originalPost, retweetPost } = response.data;
-        console.log(originalPost);
-        button.find('span').text((originalPost.userRetweets && originalPost.userRetweets.length) || '');
-        if (originalPost.userRetweets && originalPost.userRetweets.includes(userLoggedIn._id)) {
+        const {
+            originalPost: { userRetweets },
+            retweetPost,
+        } = response.data;
+        button.find('span').text(userRetweets.length || '');
+        if (userRetweets.includes(userLoggedIn._id)) {
             button.addClass('active');
+            const html = createPostHtml(retweetPost);
+            $('.postsContainer').prepend(html);
         } else {
             button.removeClass('active');
         }
@@ -87,6 +91,7 @@ function createPostHtml(postData) {
     const displayName = firstName + ' ' + lastName;
     const timestamp = timeDifference(new Date(), new Date(createdAt));
     const likeButtonActiveClass = userLikes.includes(userLoggedIn._id) ? 'active' : '';
+    const retweetButtonActiveClass = userRetweets.includes(userLoggedIn._id) ? 'active' : '';
 
     return `<div class='post' data-id='${_id}'>
                 <div class='mainContentContainer'>
@@ -109,7 +114,7 @@ function createPostHtml(postData) {
                                 </button>
                             </div>
                             <div class='postButtonContainer green'>
-                                <button class='retweetButton'>
+                                <button class='retweetButton ${retweetButtonActiveClass}'>
                                     <i class='fas fa-retweet'></i>
                                     <span>${userRetweets.length || ''}</span>
                                 </button>
