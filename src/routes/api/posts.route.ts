@@ -18,8 +18,9 @@ postsRouter.get(
     requireLogin,
     asyncHandler(async (req, res, next) => {
         // Uses virtual defined in post schema
-        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).exec();
-        res.status(200).json({ data: posts });
+        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').exec();
+        const data = await User.populate(posts, { path: 'retweetData.postedBy' });
+        res.status(200).json({ data });
     }),
 );
 

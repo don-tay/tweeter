@@ -61,13 +61,14 @@ $(document).on('click', '.retweetButton', (event) => {
     $.post('/api/posts/retweet', data, (response, status, xhr) => {
         const {
             originalPost: { userRetweets },
-            retweetPost,
+            // retweetPost,
         } = response.data;
         button.find('span').text(userRetweets.length || '');
         if (userRetweets.includes(userLoggedIn._id)) {
             button.addClass('active');
-            const html = createPostHtml(retweetPost);
-            $('.postsContainer').prepend(html);
+            // TODO: implement show new retweet post on retweet button click. Require backend to populate relevant retweet fields
+            // const html = createPostHtml(retweetPost);
+            // $('.postsContainer').prepend(html);
         } else {
             button.removeClass('active');
         }
@@ -86,14 +87,29 @@ function createPostHtml(postData) {
         createdAt,
         userLikes,
         userRetweets,
+        retweetData,
         _id,
     } = postData;
+
+    const isRetweet = !!retweetData;
+    const retweetedBy = isRetweet ? username : null;
+
+    const retweetHtml = isRetweet
+        ? `<span><i class='fas fa-retweet'></i> Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a></span>`
+        : '';
+
+    const bodyText = isRetweet ? retweetData.content : content;
+
     const displayName = firstName + ' ' + lastName;
     const timestamp = timeDifference(new Date(), new Date(createdAt));
+
     const likeButtonActiveClass = userLikes.includes(userLoggedIn._id) ? 'active' : '';
     const retweetButtonActiveClass = userRetweets.includes(userLoggedIn._id) ? 'active' : '';
 
     return `<div class='post' data-id='${_id}'>
+                <div class='postActionContainer'>
+                    ${retweetHtml}
+                </div>
                 <div class='mainContentContainer'>
                     <div class='userImageContainer'>
                         <img src='${profilePic}' />
@@ -105,7 +121,7 @@ function createPostHtml(postData) {
                             <span class='date'>${timestamp}</span>
                         </div>
                         <div class='postBody'>
-                            <span>${content}</span>
+                            <span>${bodyText}</span>
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
