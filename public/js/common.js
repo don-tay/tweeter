@@ -1,8 +1,9 @@
-$('#postTextarea').keyup((event) => {
+$('#postTextarea, #replyTextarea').keyup((event) => {
     const textbox = $(event.target);
     const value = textbox.val().trim();
 
-    const submitButton = $('#submitPostButton');
+    const isModal = textbox.parents('.modal').length === 1;
+    const submitButton = isModal ? $('#submitReplyButton') : $('#submitPostButton');
 
     if (submitButton.length === 0) {
         return console.error('Submit button not found.');
@@ -26,6 +27,17 @@ $('#submitPostButton').click((event) => {
         button.prop('disabled', true);
     });
 });
+
+$('#replyModal').on('show.bs.modal', (event) => {
+    const button = $(event.relatedTarget);
+    const postId = getPostIdFromElement(button);
+
+    $.get(`/api/posts/${postId}`, (response, status, xhr) => {
+        outputPosts(response.data, $('#originalPostContainer'));
+    });
+});
+
+$('#replyModal').on('hidden.bs.modal', () => $('#originalPostContainer').html(''));
 
 $(document).on('click', '.likeButton', (event) => {
     const button = $(event.target);
@@ -132,7 +144,7 @@ function createPostHtml(postData) {
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
-                                <button>
+                                <button data-toggle='modal' data-target='#replyModal'>
                                     <i class='far fa-comment'></i>
                                 </button>
                             </div>
@@ -152,6 +164,23 @@ function createPostHtml(postData) {
                     </div>
                 </div>
             </div>`;
+}
+
+function outputPosts(postData, container) {
+    container.html('');
+
+    if (!Array.isArray(postData)) {
+        postData = [postData];
+    }
+
+    postData.forEach((post) => {
+        const html = createPostHtml(post);
+        container.append(html);
+    });
+
+    if (postData.length === 0) {
+        container.append(`<span class='noResults'>Nothing to show.</span>`);
+    }
 }
 
 function timeDifference(current, previous) {

@@ -17,8 +17,18 @@ postsRouter.get(
     '/',
     requireLogin,
     asyncHandler(async (req, res, next) => {
-        // Uses virtual defined in post schema
         const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').exec();
+        const data = await User.populate(posts, { path: 'retweetData.postedBy' });
+        res.status(200).json({ data });
+    }),
+);
+
+postsRouter.get(
+    '/:postId',
+    requireLogin,
+    asyncHandler(async (req, res, next) => {
+        const { postId } = req.params;
+        const posts = await Post.findById(postId).populate('postedBy').populate('retweetData').exec();
         const data = await User.populate(posts, { path: 'retweetData.postedBy' });
         res.status(200).json({ data });
     }),
