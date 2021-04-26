@@ -210,3 +210,8 @@ button span {
     color: var(--greyText);
     margin-bottom: 5px;
 }
+
+.deletedBodyText {
+    color: var(--greyText);
+    font-style: italic;
+}

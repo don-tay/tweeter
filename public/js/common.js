@@ -98,7 +98,14 @@ function createPostHtml(postData) {
         ? `<span><i class='fas fa-retweet'></i> Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a></span>`
         : '';
 
-    const bodyText = isRetweet ? retweetData.content : content;
+    let bodyText = isRetweet ? retweetData?.content : content;
+    let bodyTextClass = '';
+
+    // if bodyText is undefined, show default 'Post has been deleted' text
+    if (!bodyText) {
+        bodyText = 'Post has been deleted';
+        bodyTextClass = 'deletedBodyText';
+    }
 
     const displayName = firstName + ' ' + lastName;
     const timestamp = timeDifference(new Date(), new Date(createdAt));
@@ -121,7 +128,7 @@ function createPostHtml(postData) {
                             <span class='date'>${timestamp}</span>
                         </div>
                         <div class='postBody'>
-                            <span>${bodyText}</span>
+                            <span class='${bodyTextClass}'>${bodyText}</span>
                         </div>
                         <div class='postFooter'>
                             <div class='postButtonContainer'>
