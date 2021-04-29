@@ -226,7 +226,7 @@ button span {
 }
 
 .replyFlag {
-    margin-bottom: 5px;
+    color: var(--greyText);
 }
 
 .replyFlag a {

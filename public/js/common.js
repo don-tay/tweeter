@@ -107,13 +107,14 @@ function getPostIdFromElement(elem) {
 
 function createPostHtml(postData) {
     const {
-        postedBy: { username, profilePic, firstName, lastName, replyTo },
+        postedBy: { username, profilePic, firstName, lastName },
         content,
         createdAt,
         userLikes,
         userRetweets,
         retweetData,
         _id,
+        replyTo,
     } = postData;
 
     const isRetweet = !!retweetData;
@@ -144,7 +145,7 @@ function createPostHtml(postData) {
         const { username: replyUsername } = postedBy;
 
         replyFlag = `<div class='replyFlag'>
-                        Replying to <a href='/profile/${replyUsername}'>${replyUsername}</a>
+                        Replying to <a href='/profile/${replyUsername}'>@${replyUsername}</a>
                     </div>`;
     }
 

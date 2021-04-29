@@ -22,7 +22,7 @@ postsRouter.get(
         // TODO: refactor reused queries
         const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').populate('replyTo').exec();
         let data = await User.populate(posts, { path: 'replyTo.postedBy' });
-        data = await User.populate(posts, { path: 'retweetData.postedBy' });
+        data = await User.populate(data, { path: 'retweetData.postedBy' });
         res.status(200).json({ data });
     }),
 );
@@ -34,7 +34,7 @@ postsRouter.get(
         const { postId } = req.params;
         const posts = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
         let data = await User.populate(posts, { path: 'replyTo.postedBy' });
-        data = await await User.populate(posts, { path: 'retweetData.postedBy' });
+        data = await await User.populate(data, { path: 'retweetData.postedBy' });
         res.status(200).json({ data });
     }),
 );
