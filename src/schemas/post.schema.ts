@@ -7,6 +7,7 @@ export interface IPost extends mongoose.Document {
     userLikes: string[];
     userRetweets: string[];
     retweetData: string;
+    replyTo: string;
 }
 
 const PostSchema = new mongoose.Schema(
@@ -17,6 +18,7 @@ const PostSchema = new mongoose.Schema(
         userLikes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
         userRetweets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
         retweetData: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
+        replyTo: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
     },
     { timestamps: true },
 );
