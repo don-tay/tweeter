@@ -10,6 +10,8 @@ class CreatePostDto {
     @IsString()
     @IsNotEmpty()
     content: string;
+
+    replyTo?: string;
 }
 
 // TODO: add query params to support limit offset
@@ -17,9 +19,22 @@ postsRouter.get(
     '/',
     requireLogin,
     asyncHandler(async (req, res, next) => {
-        // Uses virtual defined in post schema
-        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').exec();
-        const data = await User.populate(posts, { path: 'retweetData.postedBy' });
+        // TODO: refactor reused queries
+        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').populate('replyTo').exec();
+        let data = await User.populate(posts, { path: 'replyTo.postedBy' });
+        data = await User.populate(data, { path: 'retweetData.postedBy' });
+        res.status(200).json({ data });
+    }),
+);
+
+postsRouter.get(
+    '/:postId',
+    requireLogin,
+    asyncHandler(async (req, res, next) => {
+        const { postId } = req.params;
+        const posts = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
+        let data = await User.populate(posts, { path: 'replyTo.postedBy' });
+        data = await await User.populate(data, { path: 'retweetData.postedBy' });
         res.status(200).json({ data });
     }),
 );
@@ -30,9 +45,9 @@ postsRouter.use(requireLogin);
 postsRouter.post(
     '/',
     asyncHandler(async (req, res, next) => {
-        const { content } = req.body;
-        const payload = { content, postedBy: req.session.user };
-        const data = await (await Post.create(payload)).populate('postedBy').execPopulate();
+        const { content, replyTo } = req.body;
+        const payload = { content, postedBy: req.session.user, replyTo };
+        const data = await (await Post.create(payload)).populate('postedBy').populate('replyTo').execPopulate();
 
         res.status(201).json({ data });
     }),
