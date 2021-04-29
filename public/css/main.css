@@ -224,3 +224,11 @@ button span {
     color: var(--greyText);
     font-style: italic;
 }
+
+.replyFlag {
+    margin-bottom: 5px;
+}
+
+.replyFlag a {
+    color: var(--blue);
+}

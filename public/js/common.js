@@ -16,23 +16,27 @@ $('#submitPostButton, #submitReplyButton').click((event) => {
     const button = $(event.target);
 
     const isModal = button.parents('.modal').length === 1;
-    const textbox = isModal ? $('#replyTextarea') : $('#postTextarea'); 
+    const textbox = isModal ? $('#replyTextarea') : $('#postTextarea');
 
     const data = {
         content: textbox.val(),
     };
 
     // for reply post, send additional replyTo field to server
-    if(isModal) {
+    if (isModal) {
         const id = button.data()?.id;
         data.replyTo = id;
     }
 
     $.post('/api/posts', data, (response, status, xhr) => {
-        const html = createPostHtml(response.data);
-        $('.postsContainer').prepend(html);
-        textbox.val('');
-        button.prop('disabled', true);
+        if (response.data?.replyTo) {
+            location.reload();
+        } else {
+            const html = createPostHtml(response.data);
+            $('.postsContainer').prepend(html);
+            textbox.val('');
+            button.prop('disabled', true);
+        }
     });
 });
 
@@ -103,7 +107,7 @@ function getPostIdFromElement(elem) {
 
 function createPostHtml(postData) {
     const {
-        postedBy: { username, profilePic, firstName, lastName },
+        postedBy: { username, profilePic, firstName, lastName, replyTo },
         content,
         createdAt,
         userLikes,
@@ -134,6 +138,16 @@ function createPostHtml(postData) {
     const likeButtonActiveClass = userLikes.includes(userLoggedIn._id) ? 'active' : '';
     const retweetButtonActiveClass = userRetweets.includes(userLoggedIn._id) ? 'active' : '';
 
+    let replyFlag = '';
+    if (replyTo) {
+        const { postedBy } = replyTo;
+        const { username: replyUsername } = postedBy;
+
+        replyFlag = `<div class='replyFlag'>
+                        Replying to <a href='/profile/${replyUsername}'>${replyUsername}</a>
+                    </div>`;
+    }
+
     return `<div class='post' data-id='${_id}'>
                 <div class='postActionContainer'>
                     ${retweetHtml}
@@ -148,6 +162,7 @@ function createPostHtml(postData) {
                             <span class='username'>@${username}</span>
                             <span class='date'>${timestamp}</span>
                         </div>
+                        ${replyFlag}
                         <div class='postBody'>
                             <span class='${bodyTextClass}'>${bodyText}</span>
                         </div>
