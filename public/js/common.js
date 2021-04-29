@@ -12,13 +12,21 @@ $('#postTextarea, #replyTextarea').keyup((event) => {
     submitButton.prop('disabled', !value);
 });
 
-$('#submitPostButton').click((event) => {
+$('#submitPostButton, #submitReplyButton').click((event) => {
     const button = $(event.target);
-    const textbox = $('#postTextarea');
+
+    const isModal = button.parents('.modal').length === 1;
+    const textbox = isModal ? $('#replyTextarea') : $('#postTextarea'); 
 
     const data = {
         content: textbox.val(),
     };
+
+    // for reply post, send additional replyTo field to server
+    if(isModal) {
+        const id = button.data()?.id;
+        data.replyTo = id;
+    }
 
     $.post('/api/posts', data, (response, status, xhr) => {
         const html = createPostHtml(response.data);
@@ -31,6 +39,7 @@ $('#submitPostButton').click((event) => {
 $('#replyModal').on('show.bs.modal', (event) => {
     const button = $(event.relatedTarget);
     const postId = getPostIdFromElement(button);
+    $('#submitReplyButton').data('id', postId);
 
     $.get(`/api/posts/${postId}`, (response, status, xhr) => {
         outputPosts(response.data, $('#originalPostContainer'));
