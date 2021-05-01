@@ -9,5 +9,5 @@ postsRouter.get('/:id', (req, res) => {
         postId,
     };
 
-    res.status(200).render('post', payload);
+    res.status(200).render('postPage', payload);
 });
