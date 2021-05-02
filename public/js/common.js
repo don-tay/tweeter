@@ -100,6 +100,16 @@ $(document).on('click', '.retweetButton', (event) => {
     });
 });
 
+$(document).on('click', '.post', (event) => {
+    const elem = $(event.target);
+    const postId = getPostIdFromElement(elem);
+
+    // 2nd check handle if clicking retweet/like/reply button
+    if (postId && !elem.is('button')) {
+        window.location.href = `/posts/${postId}`;
+    }
+});
+
 function getPostIdFromElement(elem) {
     const rootElem = elem.hasClass('post') ? elem : elem.closest('.post'); // look for root elem ie. elem with the class 'post'
     return rootElem.data().id;
