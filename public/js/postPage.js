@@ -1,5 +1,5 @@
 $(document).ready(() => {
-    $.get(`/api/posts/${postId}`, (res) => {
-        outputPosts(res, $('.postsContainer'));
+    $.get(`/api/posts/${postId}`, (response) => {
+        outputPosts(response.data, $('.postsContainer'));
     });
 });

@@ -106,7 +106,7 @@ $(document).on('click', '.post', (event) => {
 
     // 2nd check handle if clicking retweet/like/reply button
     if (postId && !elem.is('button')) {
-        windows.location.href = `/posts/${postId}`;
+        window.location.href = `/posts/${postId}`;
     }
 });
 
