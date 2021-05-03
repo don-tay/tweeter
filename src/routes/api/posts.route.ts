@@ -32,9 +32,12 @@ postsRouter.get(
     requireLogin,
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
-        const posts = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
-        let data = await User.populate(posts, { path: 'replyTo.postedBy' });
-        data = await await User.populate(data, { path: 'retweetData.postedBy' });
+        const post = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
+        let populatedPost = await (await User.populate(post, { path: 'retweetData.postedBy' })).execPopulate();
+        populatedPost = await (await User.populate(post, { path: 'replyTo.postedBy' })).execPopulate();
+        // get all replies for post
+        const replies = await Post.find({ replyTo: postId }).lean().exec();
+        const data = { ...populatedPost, replies };
         res.status(200).json({ data });
     }),
 );
