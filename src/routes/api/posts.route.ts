@@ -33,11 +33,12 @@ postsRouter.get(
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
         const post = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
-        let populatedPost = await (await User.populate(post, { path: 'retweetData.postedBy' })).execPopulate();
-        populatedPost = await (await User.populate(post, { path: 'replyTo.postedBy' })).execPopulate();
+        let data: any = await User.populate(post, { path: 'retweetData.postedBy' });
+        data = await User.populate(post, { path: 'replyTo.postedBy' });
         // get all replies for post
         const replies = await Post.find({ replyTo: postId }).lean().exec();
-        const data = { ...populatedPost, replies };
+        // TODO: refactor into more type-consistent manner. temp workaround for mongoose docs metadata being introduced in destructuring
+        data.replies = replies;
         res.status(200).json({ data });
     }),
 );
