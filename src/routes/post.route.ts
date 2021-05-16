@@ -1,7 +1,8 @@
 import express from 'express';
+import { requireLogin } from '../middlewares';
 export const postsRouter = express.Router();
 
-postsRouter.get('/:id', (req, res) => {
+postsRouter.get('/:id', requireLogin, (req, res) => {
     const postId = req.params.id;
     const payload = {
         pageTitle: 'View post',

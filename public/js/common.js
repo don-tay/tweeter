@@ -150,7 +150,7 @@ function createPostHtml(postData) {
     const retweetButtonActiveClass = userRetweets.includes(userLoggedIn._id) ? 'active' : '';
 
     let replyFlag = '';
-    if (replyTo) {
+    if (replyTo?._id) {
         const { postedBy } = replyTo;
         const { username: replyUsername } = postedBy;
 
@@ -210,6 +210,23 @@ function outputPosts(postData, container) {
 
     postData.forEach((post) => {
         const html = createPostHtml(post);
+        container.append(html);
+    });
+
+    if (postData.length === 0) {
+        container.append(`<span class='noResults'>Nothing to show.</span>`);
+    }
+}
+
+function outputPostsWithReplies(postData, container) {
+    container.html('');
+
+    // output main post replied to
+    const html = createPostHtml(post);
+    container.append(html);
+
+    postData?.replies.forEach((reply) => {
+        const html = createPostHtml(reply);
         container.append(html);
     });
 
