@@ -115,7 +115,7 @@ function getPostIdFromElement(elem) {
     return rootElem.data().id;
 }
 
-function createPostHtml(postData) {
+function createPostHtml(postData, largeFont = false) {
     const {
         postedBy: { username, profilePic, firstName, lastName },
         content,
@@ -148,6 +148,7 @@ function createPostHtml(postData) {
 
     const likeButtonActiveClass = userLikes.includes(userLoggedIn._id) ? 'active' : '';
     const retweetButtonActiveClass = userRetweets.includes(userLoggedIn._id) ? 'active' : '';
+    const largeFontClass = largeFont ? 'largeFont' : '';
 
     let replyFlag = '';
     if (replyTo?._id) {
@@ -159,7 +160,7 @@ function createPostHtml(postData) {
                     </div>`;
     }
 
-    return `<div class='post' data-id='${_id}'>
+    return `<div class='post ${largeFontClass}' data-id='${_id}'>
                 <div class='postActionContainer'>
                     ${retweetHtml}
                 </div>
@@ -221,8 +222,13 @@ function outputPosts(postData, container) {
 function outputPostsWithReplies(postData, container) {
     container.html('');
 
+    if (postData.replyTo?._id) {
+        const html = createPostHtml(postData.replyTo);
+        container.append(html);
+    }
+
     // output main post replied to
-    const html = createPostHtml(post);
+    const html = createPostHtml(postData, true);
     container.append(html);
 
     postData?.replies.forEach((reply) => {
