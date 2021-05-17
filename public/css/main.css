@@ -234,4 +234,6 @@ button span {
 }
 
 .post.largeFont .postBody,
-.post.largeFont .post
+.post.largeFont .postFooter {
+    font-size: 23px;
+}
