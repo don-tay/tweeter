@@ -71,17 +71,19 @@ Set up a MongoDB database instance by hosting an instance on MongoDB Atlas. See 
 
 1. Create a new file in the repo `config/.env`
 2. Add the following variables and values to the new file in the following format:
+
 ```bash
 Variable1=Value1
 Variable2=Value2
 ....
 ```
-   | Variable | Value |
-   |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-   | NODE_ENV | production |
-   | PORT | 5000 |
-   | MONGO_URI | Copy your MongoDB instance credentials here (eg. mongodb+srv://**_user_**:**_password_**!@main.xhohk.mongodb.net/**_db_name_**?retryWrites=true&w=majority) |
-   | SESSION_SECRET | _Add any random characters here_ |
+
+| Variable       | Value                                                                                                                                                       |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| NODE_ENV       | production                                                                                                                                                  |
+| PORT           | 5000                                                                                                                                                        |
+| MONGO_URI      | Copy your MongoDB instance credentials here (eg. mongodb+srv://**_user_**:**_password_**!@main.xhohk.mongodb.net/**_db_name_**?retryWrites=true&w=majority) |
+| SESSION_SECRET | _Add any random characters here_                                                                                                                            |
 
 ## Running the app
 
