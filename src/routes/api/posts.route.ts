@@ -20,10 +20,14 @@ postsRouter.get(
     requireLogin,
     asyncHandler(async (req, res, next) => {
         // TODO: refactor reused queries
-        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').populate('replyTo').exec();
-        let data = await User.populate(posts, { path: 'replyTo.postedBy' });
-        data = await User.populate(data, { path: 'retweetData.postedBy' });
-        res.status(200).json({ data });
+        const posts = await Post.find()
+            .populate('postedBy')
+            .sort({ createdAt: -1 })
+            .populate({ path: 'retweetData', populate: { path: 'postedBy', model: 'User' } })
+            .populate({ path: 'replyTo', populate: { path: 'postedBy', model: 'User' } })
+            .lean()
+            .exec();
+        res.status(200).json({ data: posts });
     }),
 );
 
@@ -69,7 +73,7 @@ postsRouter.put(
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
         const { _id: userId, postLikes } = req.session.user;
-        const hasLikedPost = postLikes.includes(postId);
+        const hasLikedPost: boolean = postLikes.includes(postId);
         // add to like array in db if has not like before. Otherwise, remove from array in db.
         const dbOperator = hasLikedPost ? '$pull' : '$addToSet';
 
@@ -98,9 +102,8 @@ postsRouter.post(
     '/retweet',
     asyncHandler(async (req, res, next) => {
         const { postId } = req.body;
-        console.log(postId);
         const { _id: userId, postRetweets } = req.session.user;
-        const hasRetweetedPost = postRetweets.includes(postId);
+        const hasRetweetedPost: boolean = postRetweets.includes(postId);
         // TODO: add handler to prevent user from retweeting own post
         // add to retweet array in db if has not retweet before. Otherwise, remove from array in db.
         const dbOperator = hasRetweetedPost ? '$pull' : '$addToSet';
