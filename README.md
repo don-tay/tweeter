@@ -11,11 +11,18 @@
 
 ## Getting started
 
-### Global dependencies list
+To run the app locally:
+
+1. Set up the global dependencies on your machine
+2. Create an environment variable file with the necessary information.
+
+Read on for detailed instructions.
+
+## Global dependencies list
 
 Global dependencies are listed as follows. See sections below for installation instructions for each dependency.
 
--   NodeJS v14.16.1
+-   NodeJS v14.17.0
 -   Yarn 2 (berry)
 -   MongoDB 4.4
 
@@ -23,16 +30,10 @@ Global dependencies are listed as follows. See sections below for installation i
 
 There are 2 methods of downloading the NodeJS runtime environment, as follows:
 
-1. Using nvm
-2. Direct from NodeJS website
+A. Using nvm (Recommended)
+B. From NodeJS website
 
-To verify, if NodeJS has been setup, run
-
-```bash
-node -v
-```
-
-#### Using nvm
+#### A. Using nvm (Recommended)
 
 See [guide](https://github.com/nvm-sh/nvm#installing-and-updating) for installation instruction. Before running the app, run
 
@@ -40,9 +41,15 @@ See [guide](https://github.com/nvm-sh/nvm#installing-and-updating) for installat
 nvm install && nvm use
 ```
 
-#### Direct from NodeJS website
+#### B. From NodeJS website
 
 See [guide](https://nodejs.org/en/download/) for installation instruction.
+
+To verify if NodeJS has been setup and running properly, run
+
+```bash
+node -v
+```
 
 ### Yarn Package Manager
 
@@ -56,13 +63,29 @@ yarn install
 
 ### Setting up MongoDB database
 
-The recommended way of setting up the MongoDB database is to host an instance on MongoDB Atlas. See this [guide](https://docs.atlas.mongodb.com/getting-started/).
+Set up a MongoDB database instance by hosting an instance on MongoDB Atlas. See this [guide](https://docs.atlas.mongodb.com/getting-started/) on setting up.
 
-Then add your MongoDB instance credentials to `MONGO_URI` in the `config/.env` file.
+> **NB**: Take note of your MongoDB instance credentials. It will be added to the environment variable file in the next step.
 
-### Running the app
+## Environment variable file
 
-Once all global dependencies are set up, the app can be run in the following ways:
+1. Create a new file in the repo `config/.env`
+2. Add the following variables and values to the new file in the following format:
+```bash
+Variable1=Value1
+Variable2=Value2
+....
+```
+   | Variable | Value |
+   |----------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
+   | NODE_ENV | production |
+   | PORT | 5000 |
+   | MONGO_URI | Copy your MongoDB instance credentials here (eg. mongodb+srv://**_user_**:**_password_**!@main.xhohk.mongodb.net/**_db_name_**?retryWrites=true&w=majority) |
+   | SESSION_SECRET | _Add any random characters here_ |
+
+## Running the app
+
+Once all global dependencies are set up and the `config/.env` file is populated, the app can be run in the following ways:
 
 ```bash
 # Run in development
