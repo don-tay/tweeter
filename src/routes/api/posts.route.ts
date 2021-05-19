@@ -20,10 +20,14 @@ postsRouter.get(
     requireLogin,
     asyncHandler(async (req, res, next) => {
         // TODO: refactor reused queries
-        const posts = await Post.find().populate('postedBy').sort({ createdAt: -1 }).populate('retweetData').populate('replyTo').exec();
-        let data = await User.populate(posts, { path: 'replyTo.postedBy' });
-        data = await User.populate(data, { path: 'retweetData.postedBy' });
-        res.status(200).json({ data });
+        const posts = await Post.find()
+            .populate('postedBy')
+            .sort({ createdAt: -1 })
+            .populate({ path: 'retweetData', populate: { path: 'postedBy', model: 'User' } })
+            .populate({ path: 'replyTo', populate: { path: 'postedBy', model: 'User' } })
+            .lean()
+            .exec();
+        res.status(200).json({ data: posts });
     }),
 );
 
@@ -32,13 +36,16 @@ postsRouter.get(
     requireLogin,
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
-        const post = await Post.findById(postId).populate('postedBy').populate('retweetData').populate('replyTo').exec();
-        let data: any = await User.populate(post, { path: 'retweetData.postedBy' });
-        data = await User.populate(post, { path: 'replyTo.postedBy' });
-        // get all replies for post
-        const replies = await Post.find({ replyTo: postId }).lean().exec();
-        // TODO: refactor into more type-consistent manner. temp workaround for mongoose docs metadata being introduced in destructuring
-        data.replies = replies;
+        const [post, replies] = await Promise.all([
+            Post.findById(postId)
+                .populate('postedBy')
+                .populate({ path: 'retweetData', populate: { path: 'postedBy', model: 'User' } })
+                .populate({ path: 'replyTo', populate: { path: 'postedBy', model: 'User' } })
+                .lean()
+                .exec(),
+            Post.find({ replyTo: postId }).populate('postedBy').lean().exec(),
+        ]);
+        const data = { ...post, replies };
         res.status(200).json({ data });
     }),
 );
@@ -66,7 +73,7 @@ postsRouter.put(
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
         const { _id: userId, postLikes } = req.session.user;
-        const hasLikedPost = postLikes.includes(postId);
+        const hasLikedPost: boolean = postLikes.includes(postId);
         // add to like array in db if has not like before. Otherwise, remove from array in db.
         const dbOperator = hasLikedPost ? '$pull' : '$addToSet';
 
@@ -95,9 +102,8 @@ postsRouter.post(
     '/retweet',
     asyncHandler(async (req, res, next) => {
         const { postId } = req.body;
-        console.log(postId);
         const { _id: userId, postRetweets } = req.session.user;
-        const hasRetweetedPost = postRetweets.includes(postId);
+        const hasRetweetedPost: boolean = postRetweets.includes(postId);
         // TODO: add handler to prevent user from retweeting own post
         // add to retweet array in db if has not retweet before. Otherwise, remove from array in db.
         const dbOperator = hasRetweetedPost ? '$pull' : '$addToSet';
