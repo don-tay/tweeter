@@ -64,6 +64,20 @@ postsRouter.post(
     }),
 );
 
+postsRouter.delete(
+    '/:postId',
+    asyncHandler(async (req, res, next) => {
+        const { postId } = req.params;
+        // ensures post to be deleted is by user, else fails
+        const data = await Post.findOneAndDelete({ postedBy: req.session.user?._id, _id: postId }).lean().exec();
+        if (data) {
+            res.status(200).json({ data });
+        } else {
+            res.sendStatus(400);
+        }
+    }),
+);
+
 /**
  * @desc: Like/dislike post
  * @return: { data: { userLikes }}
