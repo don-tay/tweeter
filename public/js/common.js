@@ -117,7 +117,7 @@ function getPostIdFromElement(elem) {
 
 function createPostHtml(postData, largeFont = false) {
     const {
-        postedBy: { username, profilePic, firstName, lastName },
+        postedBy: { _id: postedByUserId, username, profilePic, firstName, lastName },
         content,
         createdAt,
         userLikes,
@@ -160,6 +160,11 @@ function createPostHtml(postData, largeFont = false) {
                     </div>`;
     }
 
+    const buttons =
+        postedByUserId === userLoggedIn._id
+            ? `<button data-id='${postedByUserId}' data-toggle='modal' data-target='#deletePostModal'><i class='fas fa-times'></i></button>`
+            : '';
+
     return `<div class='post ${largeFontClass}' data-id='${_id}'>
                 <div class='postActionContainer'>
                     ${retweetHtml}
@@ -173,6 +178,7 @@ function createPostHtml(postData, largeFont = false) {
                             <a href='/profile/${username}' class='displayName'>${displayName}</a>
                             <span class='username'>@${username}</span>
                             <span class='date'>${timestamp}</span>
+                            ${buttons}
                         </div>
                         ${replyFlag}
                         <div class='postBody'>
