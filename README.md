@@ -22,7 +22,7 @@ Read on for detailed instructions.
 
 Global dependencies are listed as follows. See sections below for installation instructions for each dependency.
 
--   NodeJS v16.3.0
+-   Node.js v16.x
 -   Yarn 2 (berry)
 -   MongoDB 4.4
 
