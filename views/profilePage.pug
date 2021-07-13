@@ -1,10 +1,13 @@
 extends layouts/main-layout.pug
 
 block content
-    span #{profileUser.firstName}
-    .postsContainer
+    if !profileUser
+        span.errorMessage Cannot access the given URL
+    else
+        span #{profileUser.firstName}
+        .postsContainer
 
-    +createPostModal(userLoggedIn)
+        +createPostModal(userLoggedIn)
 
 block scripts
     script(src='/js/profilePage.js')
