@@ -152,7 +152,7 @@ function createPostHtml(postData, largeFont = false) {
     const retweetedBy = isRetweet ? username : null;
 
     const retweetHtml = isRetweet
-        ? `<span><i class='fas fa-retweet'></i> Retweeted by <a href='/profile/${retweetedBy}'>@${retweetedBy}</a></span>`
+        ? `<span><i class='fas fa-retweet'></i> Retweeted by <a href='/profiles/${retweetedBy}'>@${retweetedBy}</a></span>`
         : '';
 
     let bodyText = isRetweet ? retweetData?.content : content;
@@ -177,7 +177,7 @@ function createPostHtml(postData, largeFont = false) {
         const { username: replyUsername } = postedBy;
 
         replyFlag = `<div class='replyFlag'>
-                        Replying to <a href='/profile/${replyUsername}'>@${replyUsername}</a>
+                        Replying to <a href='/profiles/${replyUsername}'>@${replyUsername}</a>
                     </div>`;
     }
 
@@ -196,7 +196,7 @@ function createPostHtml(postData, largeFont = false) {
                     </div>
                     <div class='postContentContainer'>
                         <div class='header'>
-                            <a href='/profile/${username}' class='displayName'>${displayName}</a>
+                            <a href='/profiles/${username}' class='displayName'>${displayName}</a>
                             <span class='username'>@${username}</span>
                             <span class='date'>${timestamp}</span>
                             ${buttons}
