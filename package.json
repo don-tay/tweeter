@@ -5,7 +5,7 @@
     "main": "dist/server.js",
     "engines": {
         "yarn": "2.4.x",
-        "node": "14.x"
+        "node": "16.x"
     },
     "author": "Don",
     "license": "MIT",
