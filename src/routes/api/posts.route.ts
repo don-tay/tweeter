@@ -14,13 +14,38 @@ class CreatePostDto {
     replyTo?: string;
 }
 
+// all routes from here require authentication
+postsRouter.use(requireLogin);
+
 // TODO: add query params to support limit offset
 postsRouter.get(
     '/',
-    requireLogin,
     asyncHandler(async (req, res, next) => {
+        const searchQuery = req.query;
+        const excludeReplies = searchQuery.excludeReplies ?? false;
+        if (excludeReplies === 'true') {
+            searchQuery.replyTo = { $exists: false };
+        }
+        delete searchQuery.excludeReplies;
         // TODO: refactor reused queries
-        const posts = await Post.find()
+        const posts = await Post.find(searchQuery)
+            .populate('postedBy')
+            .sort({ createdAt: -1 })
+            .populate({ path: 'retweetData', populate: { path: 'postedBy', model: 'User' } })
+            .populate({ path: 'replyTo', populate: { path: 'postedBy', model: 'User' } })
+            .lean()
+            .exec();
+        res.status(200).json({ data: posts });
+    }),
+);
+
+// get user's replied posts only
+postsRouter.get(
+    '/:userId/replies',
+    asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+        // TODO: refactor reused queries
+        const posts = await Post.find({ postedBy: userId, replyTo: { $exists: true } })
             .populate('postedBy')
             .sort({ createdAt: -1 })
             .populate({ path: 'retweetData', populate: { path: 'postedBy', model: 'User' } })
@@ -33,7 +58,6 @@ postsRouter.get(
 
 postsRouter.get(
     '/:postId',
-    requireLogin,
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
         const [post, replies] = await Promise.all([
@@ -49,9 +73,6 @@ postsRouter.get(
         res.status(200).json({ data });
     }),
 );
-
-// all routes from here require authentication
-postsRouter.use(requireLogin);
 
 postsRouter.post(
     '/',
