@@ -4,6 +4,8 @@ block content
     if !profileUser
         span.errorMessage Cannot access the given URL
     else
+        script.
+            const profileUserId = `!{ profileUser._id }`;
         .profileHeaderContainer
             .coverPhotoContainer
                 .userImageContainer 

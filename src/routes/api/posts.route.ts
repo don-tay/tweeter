@@ -14,10 +14,12 @@ class CreatePostDto {
     replyTo?: string;
 }
 
+// all routes from here require authentication
+postsRouter.use(requireLogin);
+
 // TODO: add query params to support limit offset
 postsRouter.get(
     '/',
-    requireLogin,
     asyncHandler(async (req, res, next) => {
         // TODO: refactor reused queries
         const posts = await Post.find()
@@ -33,7 +35,6 @@ postsRouter.get(
 
 postsRouter.get(
     '/:postId',
-    requireLogin,
     asyncHandler(async (req, res, next) => {
         const { postId } = req.params;
         const [post, replies] = await Promise.all([
@@ -49,9 +50,6 @@ postsRouter.get(
         res.status(200).json({ data });
     }),
 );
-
-// all routes from here require authentication
-postsRouter.use(requireLogin);
 
 postsRouter.post(
     '/',
