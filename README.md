@@ -31,6 +31,7 @@ Global dependencies are listed as follows. See sections below for installation i
 There are 2 methods of downloading the NodeJS runtime environment, as follows:
 
 A. Using nvm (Recommended)
+
 B. From NodeJS website
 
 #### A. Using nvm (Recommended)
