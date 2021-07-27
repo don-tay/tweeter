@@ -9,6 +9,10 @@
     },
     "author": "Don",
     "license": "MIT",
+    "workspaces": [
+        "client"
+    ],
+    "private": true,
     "scripts": {
         "start": "node dist/server.js",
         "dev": "NODE_ENV=development nodemon src/server.ts",
