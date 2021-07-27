@@ -6,7 +6,7 @@ html(lang='en')
         meta(charset='UTF-8')
         meta(http-equiv='X-UA-Compatible', content='IE=edge')
         meta(name='viewport', content='width=device-width, initial-scale=1.0')
-        title #{pageTitle}
+        title #{ pageTitle }
 
         link(
             rel='stylesheet',
@@ -18,7 +18,7 @@ html(lang='en')
 
     body
         script.
-            const userLoggedIn = "!{ JSON.stringify(userLoggedIn) }";
+            const userLoggedIn = "!{ JSON.stringify(userLoggedIn) }";        
         .wrapper
             .row
                 nav.col-2
@@ -38,7 +38,7 @@ html(lang='en')
                         i.fas.fa-sign-out-alt
                 .mainSectionContainer.col-10.col-md-8.col-lg-6
                     .titleContainer
-                        h1 #{pageTitle}
+                        h1 #{ pageTitle }
 
                     block content
 

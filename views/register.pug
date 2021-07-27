@@ -4,7 +4,7 @@ block content
     .loginContainer
         h1 Register
         form#registerForm(method='post', onSubmit='event.preventDefault(); validateForm();')
-            p.errorMessage #{errorMessage}
+            p.errorMessage #{ errorMessage }
 
             //- Note value fields is for repopulation if server-side validation fails
             input(type='text', name='firstName', placeholder='First name', value=firstName, required='')
