@@ -5,8 +5,8 @@ block content
         span.errorMessage Cannot access the given URL
     else
         script.
-            const profileUserId = `!{ profileUser._id }`;
-            const selectedTab = `!{selectedTab}`;
+            const profileUserId = "!{ profileUser._id }";
+            const selectedTab = "!{selectedTab}";
         
         .profileHeaderContainer
             .coverPhotoContainer
@@ -20,16 +20,16 @@ block content
                     +createFollowButton(profileUser, true)
 
             .userDetailsContainer
-                span.displayName #{profileUser.firstName} #{profileUser.lastName}
-                span.username #{profileUser.username}
-                span.description #{profileUser.description}
+                span.displayName #{ profileUser.firstName } #{ profileUser.lastName }
+                span.username #{ profileUser.username }
+                span.description #{ profileUser.description }
 
                 .followersContainer
                     a(href=`/profile/${profileUser.username}/following`)
-                    span.value #{0}
+                    span.value #{ 0 }
                     span Following
                     a(href=`/profile/${profileUser.username}/followers`)
-                    span.value #{0}
+                    span.value #{ 0 }
                     span Followers
 
         .tabsContainer
