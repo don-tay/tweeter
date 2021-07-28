@@ -1,5 +1,4 @@
 $(document).ready(() => {
-    console.log(selectedTab);
     if (selectedTab === 'posts') {
         getPosts();
     } else if (selectedTab === 'replies') {
