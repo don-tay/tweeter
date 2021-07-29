@@ -131,6 +131,17 @@ $(document).on('click', '.post', (event) => {
     }
 });
 
+$(document).on('click', '.followButton', (event) => {
+    const button = $(event.target);
+    const userId = button.data().user;
+
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: 'PUT',
+        success: (data) => console.log(data),
+    });
+});
+
 function getPostIdFromElement(elem) {
     const rootElem = elem.hasClass('post') ? elem : elem.closest('.post'); // look for root elem ie. elem with the class 'post'
     return rootElem.data().id;
