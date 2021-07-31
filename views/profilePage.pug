@@ -8,6 +8,9 @@ block content
             const profileUserId = "!{ profileUser._id }";
             const selectedTab = "!{selectedTab}";
         
+        - followersCount = profileUser.followers?.length ?? 0;
+        - followingCount = profileUser.following?.length ?? 0;
+
         .profileHeaderContainer
             .coverPhotoContainer
                 .userImageContainer 
@@ -29,10 +32,10 @@ block content
 
                 .followersContainer
                     a(href=`/profile/${profileUser.username}/following`)
-                    span.value #{ 0 }
+                    span.value #{ followingCount }
                     span Following
                     a(href=`/profile/${profileUser.username}/followers`)
-                    span.value #{ 0 }
+                    span#followersValue.value #{ followersCount }
                     span Followers
 
         .tabsContainer

@@ -143,12 +143,20 @@ $(document).on('click', '.followButton', (event) => {
                 return;
             }
 
+            let addToFollowersCount = 1;
             if (response.data.user?.following.includes(userId)) {
                 button.addClass('following');
                 button.text('Following');
             } else {
                 button.removeClass('following');
                 button.text('Follow');
+                addToFollowersCount = -1;
+            }
+
+            const followersLabel = $('#followersValue');
+            if (followersLabel.length !== 0) {
+                let followersCount = parseInt(followersLabel.text());
+                followersLabel.text(followersCount + addToFollowersCount);
             }
         },
     });
