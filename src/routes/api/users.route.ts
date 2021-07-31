@@ -32,3 +32,21 @@ usersRouter.put(
         res.status(200).json({ data });
     }),
 );
+
+usersRouter.get(
+    '/:userId/following',
+    asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate('following');
+        res.status(200).json({ data: user });
+    }),
+);
+
+usersRouter.get(
+    '/:userId/followers',
+    asyncHandler(async (req, res, next) => {
+        const { userId } = req.params;
+        const user = await User.findById(userId).populate('followers');
+        res.status(200).json({ data: user });
+    }),
+);

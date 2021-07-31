@@ -31,12 +31,12 @@ block content
                 span.description #{ profileUser.description }
 
                 .followersContainer
-                    a(href=`/profile/${profileUser.username}/following`)
-                    span.value #{ followingCount }
-                    span Following
-                    a(href=`/profile/${profileUser.username}/followers`)
-                    span#followersValue.value #{ followersCount }
-                    span Followers
+                    a(href=`/profiles/${profileUser.username}/following`)
+                        span.value #{ followingCount }
+                        span Following
+                    a(href=`/profiles/${profileUser.username}/followers`)
+                        span#followersValue.value #{ followersCount }
+                        span Followers
 
         .tabsContainer
             +createTab('Posts', `/profiles/${profileUser.username}`, selectedTab === 'posts')
