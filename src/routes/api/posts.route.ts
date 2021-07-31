@@ -23,10 +23,21 @@ postsRouter.get(
     asyncHandler(async (req, res, next) => {
         const searchQuery = req.query;
         const excludeReplies = searchQuery.excludeReplies ?? false;
+        const followingOnly = searchQuery.followingOnly ?? false;
         if (excludeReplies === 'true') {
             searchQuery.replyTo = { $exists: false };
         }
+
+        // logic to only get post from users following
+        if (followingOnly === 'true') {
+            const usersFollowing = [...req.session.user?.following] ?? [];
+            usersFollowing.push(req.session.user?._id);
+            searchQuery.postedBy = { $in: usersFollowing };
+        }
+
         delete searchQuery.excludeReplies;
+        delete searchQuery.followingOnly;
+
         // TODO: refactor reused queries
         const posts = await Post.find(searchQuery)
             .populate('postedBy')
