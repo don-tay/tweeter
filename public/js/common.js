@@ -131,6 +131,37 @@ $(document).on('click', '.post', (event) => {
     }
 });
 
+$(document).on('click', '.followButton', (event) => {
+    const button = $(event.target);
+    const userId = button.data().user;
+
+    $.ajax({
+        url: `/api/users/${userId}/follow`,
+        type: 'PUT',
+        success: (response, status, xhr) => {
+            if (xhr.status === 404) {
+                return;
+            }
+
+            let addToFollowersCount = 1;
+            if (response.data.user?.following.includes(userId)) {
+                button.addClass('following');
+                button.text('Following');
+            } else {
+                button.removeClass('following');
+                button.text('Follow');
+                addToFollowersCount = -1;
+            }
+
+            const followersLabel = $('#followersValue');
+            if (followersLabel.length !== 0) {
+                let followersCount = parseInt(followersLabel.text());
+                followersLabel.text(followersCount + addToFollowersCount);
+            }
+        },
+    });
+});
+
 function getPostIdFromElement(elem) {
     const rootElem = elem.hasClass('post') ? elem : elem.closest('.post'); // look for root elem ie. elem with the class 'post'
     return rootElem.data().id;

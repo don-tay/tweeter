@@ -8,6 +8,9 @@ block content
             const profileUserId = "!{ profileUser._id }";
             const selectedTab = "!{selectedTab}";
         
+        - followersCount = profileUser.followers?.length ?? 0;
+        - followingCount = profileUser.following?.length ?? 0;
+
         .profileHeaderContainer
             .coverPhotoContainer
                 .userImageContainer 
@@ -17,7 +20,10 @@ block content
                 if profileUser._id !== userLoggedIn._id
                     a.profileButton(href=`/messages/${profileUser._id}`)
                         i.fas.fa-envelope
-                    +createFollowButton(profileUser, true)
+
+                    - const profileUserId = profileUser._id.toString();
+                    - const isFollowing = userLoggedIn.following?.includes(profileUserId);
+                    +createFollowButton(profileUser, isFollowing)
 
             .userDetailsContainer
                 span.displayName #{ profileUser.firstName } #{ profileUser.lastName }
@@ -25,12 +31,12 @@ block content
                 span.description #{ profileUser.description }
 
                 .followersContainer
-                    a(href=`/profile/${profileUser.username}/following`)
-                    span.value #{ 0 }
-                    span Following
-                    a(href=`/profile/${profileUser.username}/followers`)
-                    span.value #{ 0 }
-                    span Followers
+                    a(href=`/profiles/${profileUser.username}/following`)
+                        span.value #{ followingCount }
+                        span Following
+                    a(href=`/profiles/${profileUser.username}/followers`)
+                        span#followersValue.value #{ followersCount }
+                        span Followers
 
         .tabsContainer
             +createTab('Posts', `/profiles/${profileUser.username}`, selectedTab === 'posts')
