@@ -1,15 +1,18 @@
-$('#postTextarea, #replyTextarea').keyup((event) => {
-    const textbox = $(event.target);
-    const value = textbox.val().trim();
+const postAndReplyTextAreas = document.querySelectorAll('#postTextarea, #replyTextarea');
+postAndReplyTextAreas.forEach((textArea) => {
+    textArea.addEventListener('keyup', (event) => {
+        const textbox = document.getElementById(event.target.id);
+        const value = textbox.value.trim();
 
-    const isModal = textbox.parents('.modal').length === 1;
-    const submitButton = isModal ? $('#submitReplyButton') : $('#submitPostButton');
+        const isModal = !!textbox.closest('.modal');
+        const submitButton = isModal ? document.getElementById('submitReplyButton') : document.getElementById('submitPostButton');
 
-    if (submitButton.length === 0) {
-        return console.error('Submit button not found.');
-    }
+        if (!submitButton) {
+            return console.error('Submit button not found');
+        }
 
-    submitButton.prop('disabled', !value);
+        submitButton.disabled = !value;
+    });
 });
 
 $('#submitPostButton, #submitReplyButton').click((event) => {
