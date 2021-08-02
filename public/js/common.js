@@ -15,30 +15,41 @@ postAndReplyTextAreas.forEach((textArea) => {
     });
 });
 
-$('#submitPostButton, #submitReplyButton').click((event) => {
-    const button = $(event.target);
+const submitPostAndReplyBtn = document.querySelectorAll('#submitPostButton, #submitReplyButton');
+submitPostAndReplyBtn.forEach((btn) => {
+    btn.addEventListener('click', async (event) => {
+        const currBtn = document.getElementById(event.target.id);
+        const isModal = !!currBtn.closest('.modal');
+        const textbox = isModal ? document.getElementById('replyTextarea') : document.getElementById('postTextarea');
 
-    const isModal = button.parents('.modal').length === 1;
-    const textbox = isModal ? $('#replyTextarea') : $('#postTextarea');
+        const data = {
+            content: textbox.value,
+        };
 
-    const data = {
-        content: textbox.val(),
-    };
+        // for reply post, send additional replyTo field to server
+        if (isModal) {
+            const id = document.querySelector('div[data-id]').getAttribute('data-id');
+            data.replyTo = id;
+        }
 
-    // for reply post, send additional replyTo field to server
-    if (isModal) {
-        const id = button.data()?.id;
-        data.replyTo = id;
-    }
+        const response = await (
+            await fetch('/api/posts', {
+                body: JSON.stringify(data),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+        ).json();
 
-    $.post('/api/posts', data, (response, status, xhr) => {
         if (response.data?.replyTo) {
             location.reload();
         } else {
             const html = createPostHtml(response.data);
-            $('.postsContainer').prepend(html);
-            textbox.val('');
-            button.prop('disabled', true);
+            const postsContainer = document.querySelector('.postsContainer');
+            postsContainer.innerHTML = html + postsContainer.innerHTML;
+            textbox.value = '';
+            currBtn.disabled = true;
         }
     });
 });
