@@ -1,4 +1,4 @@
-$(document).ready(() => {
+document.addEventListener('DOMContentLoaded', () => {
     if (selectedTab === 'posts') {
         getPosts();
     } else if (selectedTab === 'replies') {
@@ -6,14 +6,15 @@ $(document).ready(() => {
     }
 });
 
-function getPosts() {
-    $.get(`/api/posts`, { postedBy: profileUserId, excludeReplies: true }, (response) => {
-        outputPosts(response.data, $('.postsContainer'));
-    });
+async function getPosts() {
+    const queryStr = new URLSearchParams({ postedBy: profileUserId, excludeReplies: true });
+    const response = await (await fetch(`/api/posts?${queryStr}`)).json();
+    const postsContainer = document.querySelector('.postsContainer');
+    outputPosts(response.data, postsContainer);
 }
 
-function getReplies() {
-    $.get(`/api/posts/${profileUserId}/replies`, (response) => {
-        outputPosts(response.data, $('.postsContainer'));
-    });
+async function getReplies() {
+    const response = await (await fetch(`/api/posts/${profileUserId}/replies`)).json();
+    const postsContainer = document.querySelector('.postsContainer');
+    outputPosts(response.data, postsContainer);
 }

@@ -6,28 +6,28 @@ $(document).ready(() => {
     }
 });
 
-function getFollowers() {
-    $.get(`/api/users/${profileUserId}/followers`, (response) => {
-        outputUsers(response.data?.followers, $('.resultsContainer'));
-    });
+async function getFollowers() {
+    const response = await (await fetch(`/api/users/${profileUserId}/followers`)).json();
+    const resultsContainer = document.querySelector('.resultsContainer');
+    outputUsers(response.data?.followers, resultsContainer);
 }
 
-function getFollowing() {
-    $.get(`/api/users/${profileUserId}/following`, (response) => {
-        outputUsers(response.data?.following, $('.resultsContainer'));
-    });
+async function getFollowing() {
+    const response = await (await fetch(`/api/users/${profileUserId}/following`)).json();
+    const resultsContainer = document.querySelector('.resultsContainer');
+    outputUsers(response.data?.following, resultsContainer);
 }
 
 function outputUsers(data, container) {
-    container.html('');
+    container.innerHTML = '';
 
     data.forEach((d) => {
         const html = createUserHtml(d, true);
-        container.append(html);
+        container.innerHTML += html;
     });
 
     if (data.length === 0) {
-        container.append(`<span class='no-results'>No results found</span>`);
+        container.innerHTML += `<span class='no-results'>No results found</span>`;
     }
 }
 

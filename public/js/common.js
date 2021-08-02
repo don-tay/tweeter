@@ -274,7 +274,7 @@ function outputPosts(postData, container) {
     });
 
     if (postData.length === 0) {
-        container.innerHTML += `<span class='noResults'>Nothing to show.</span>`;
+        container.innerHTML += `<span class='no-results'>Nothing to show.</span>`;
     }
 }
 
@@ -296,7 +296,7 @@ function outputPostsWithReplies(postData, container) {
     });
 
     if (postData.length === 0) {
-        container.innerHTML += `<span class='noResults'>Nothing to show.</span>`;
+        container.innerHTML += `<span class='no-results'>Nothing to show.</span>`;
     }
 }
 
