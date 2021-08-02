@@ -1,5 +1,5 @@
-$(document).ready(() => {
-    $.get('/api/posts', { followingOnly: true }, (response, status, xhr) => {
-        outputPosts(response.data, $('.postsContainer'));
-    });
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await (await fetch(`/api/posts?${new URLSearchParams({ followingOnly: true })}`)).json();
+    const postsContainer = document.querySelector('.postsContainer');
+    outputPosts(response.data, postsContainer);
 });

@@ -46,7 +46,8 @@ $('#replyModal').on('show.bs.modal', (event) => {
     $('#submitReplyButton').data('id', postId);
 
     $.get(`/api/posts/${postId}`, (response, status, xhr) => {
-        outputPosts(response.data, $('#originalPostContainer'));
+        const originalPostContainer = document.getElementById('originalPostContainer');
+        outputPosts(response.data, originalPostContainer);
     });
 });
 
@@ -261,7 +262,7 @@ function createPostHtml(postData, largeFont = false) {
 }
 
 function outputPosts(postData, container) {
-    container.html('');
+    container.innerHTML = '';
 
     if (!Array.isArray(postData)) {
         postData = [postData];
@@ -269,33 +270,33 @@ function outputPosts(postData, container) {
 
     postData.forEach((post) => {
         const html = createPostHtml(post);
-        container.append(html);
+        container.innerHTML += html;
     });
 
     if (postData.length === 0) {
-        container.append(`<span class='noResults'>Nothing to show.</span>`);
+        container.innerHTML += `<span class='noResults'>Nothing to show.</span>`;
     }
 }
 
 function outputPostsWithReplies(postData, container) {
-    container.html('');
+    container.innerHTML = '';
 
     if (postData.replyTo?._id) {
         const html = createPostHtml(postData.replyTo);
-        container.append(html);
+        container.innerHTML += html;
     }
 
     // output main post replied to
     const html = createPostHtml(postData, true);
-    container.append(html);
+    container.innerHTML += html;
 
     postData?.replies.forEach((reply) => {
         const html = createPostHtml(reply);
-        container.append(html);
+        container.innerHTML += html;
     });
 
     if (postData.length === 0) {
-        container.append(`<span class='noResults'>Nothing to show.</span>`);
+        container.innerHTML += `<span class='noResults'>Nothing to show.</span>`;
     }
 }
 

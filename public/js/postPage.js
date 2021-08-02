@@ -1,5 +1,5 @@
-$(document).ready(() => {
-    $.get(`/api/posts/${postId}`, (response) => {
-        outputPostsWithReplies(response.data, $('.postsContainer'));
-    });
+document.addEventListener('DOMContentLoaded', async () => {
+    const response = await (await fetch(`/api/posts/${postId}`)).json();
+    const postsContainer = document.querySelector('.postsContainer');
+    outputPostsWithReplies(response.data, postsContainer);
 });
