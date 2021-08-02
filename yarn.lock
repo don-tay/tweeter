@@ -161,6 +161,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jquery@npm:^3.5.6":
+  version: 3.5.6
+  resolution: "@types/jquery@npm:3.5.6"
+  dependencies:
+    "@types/sizzle": "*"
+  checksum: b59c43f42ad94cb428c8708e1c0e9589a4e2cf8ca38a34528630081de2b715f0760d02e73171934896573a6e817c45c9ded725ae13e9f8d33509f67ae4f1bd01
+  languageName: node
+  linkType: hard
+
 "@types/keyv@npm:^3.1.1":
   version: 3.1.2
   resolution: "@types/keyv@npm:3.1.2"
@@ -231,6 +240,13 @@ __metadata:
     "@types/mime": ^1
     "@types/node": "*"
   checksum: 3ee9adfd05f8b2af942e26afe9ff3993e723e1af70718aa8c2b1c0f72fe5f45be69ac20aa7ee5859d1c18f2397d5fcf4eafcb30890d88e6836a98aa7a3adb6c3
+  languageName: node
+  linkType: hard
+
+"@types/sizzle@npm:*":
+  version: 2.3.3
+  resolution: "@types/sizzle@npm:2.3.3"
+  checksum: 8f019f9e1b110b4fdfc08f8a3a8b8b87118a11f3ba11e159541b17f17498c0ef95e8efa0b818c9fed6911041f6b71ef8d44cf8c1c83b4cbb7bd14e4248892f4c
   languageName: node
   linkType: hard
 
@@ -3049,6 +3065,7 @@ resolve@^1.15.1:
     "@types/bcrypt": ^3.0.1
     "@types/express": ^4.17.11
     "@types/express-session": ^1.17.3
+    "@types/jquery": ^3.5.6
     bcrypt: ^5.0.1
     class-transformer: ^0.4.0
     class-validator: ^0.13.1
