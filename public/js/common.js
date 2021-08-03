@@ -73,7 +73,7 @@ $('#deletePostModal').on('show.bs.modal', (event) => {
     $('#deletePostButton').data('id', postId);
 });
 
-$('#deletePostButton').click((event) => {
+$(document).on('click', '#deletePostButton', (event) => {
     const postId = $(event.target).data('id');
 
     $.ajax({
