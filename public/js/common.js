@@ -73,19 +73,17 @@ $('#deletePostModal').on('show.bs.modal', (event) => {
     $('#deletePostButton').data('id', postId);
 });
 
-$(document).on('click', '#deletePostButton', (event) => {
+$(document).on('click', '#deletePostButton', async (event) => {
     const postId = $(event.target).data('id');
 
-    $.ajax({
-        url: `/api/posts/${postId}`,
-        type: 'DELETE',
-        success: (data, status, xhr) => {
-            if (xhr.status !== 200) {
-                console.error('Could not delete post');
-            }
-            location.reload();
-        },
+    const response = await fetch(`/api/posts/${postId}`, {
+        method: 'DELETE',
     });
+
+    if (response?.status !== 200) {
+        console.error('Failed to delete post');
+    }
+    location.reload();
 });
 
 $(document).on('click', '.likeButton', (event) => {
