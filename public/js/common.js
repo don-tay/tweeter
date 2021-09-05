@@ -1,41 +1,55 @@
-$('#postTextarea, #replyTextarea').keyup((event) => {
-    const textbox = $(event.target);
-    const value = textbox.val().trim();
+const postAndReplyTextAreas = document.querySelectorAll('#postTextarea, #replyTextarea');
+postAndReplyTextAreas.forEach((textArea) => {
+    textArea.addEventListener('keyup', (event) => {
+        const textbox = document.getElementById(event.target.id);
+        const value = textbox.value.trim();
 
-    const isModal = textbox.parents('.modal').length === 1;
-    const submitButton = isModal ? $('#submitReplyButton') : $('#submitPostButton');
+        const isModal = !!textbox.closest('.modal');
+        const submitButton = isModal ? document.getElementById('submitReplyButton') : document.getElementById('submitPostButton');
 
-    if (submitButton.length === 0) {
-        return console.error('Submit button not found.');
-    }
+        if (!submitButton) {
+            return console.error('Submit button not found');
+        }
 
-    submitButton.prop('disabled', !value);
+        submitButton.disabled = !value;
+    });
 });
 
-$('#submitPostButton, #submitReplyButton').click((event) => {
-    const button = $(event.target);
+const submitPostAndReplyBtn = document.querySelectorAll('#submitPostButton, #submitReplyButton');
+submitPostAndReplyBtn.forEach((btn) => {
+    btn.addEventListener('click', async (event) => {
+        const currBtn = document.getElementById(event.target.id);
+        const isModal = !!currBtn.closest('.modal');
+        const textbox = isModal ? document.getElementById('replyTextarea') : document.getElementById('postTextarea');
 
-    const isModal = button.parents('.modal').length === 1;
-    const textbox = isModal ? $('#replyTextarea') : $('#postTextarea');
+        const data = {
+            content: textbox.value,
+        };
 
-    const data = {
-        content: textbox.val(),
-    };
+        // for reply post, send additional replyTo field to server
+        if (isModal) {
+            const id = document.querySelector('div[data-id]').getAttribute('data-id');
+            data.replyTo = id;
+        }
 
-    // for reply post, send additional replyTo field to server
-    if (isModal) {
-        const id = button.data()?.id;
-        data.replyTo = id;
-    }
+        const response = await (
+            await fetch('/api/posts', {
+                body: JSON.stringify(data),
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+        ).json();
 
-    $.post('/api/posts', data, (response, status, xhr) => {
         if (response.data?.replyTo) {
             location.reload();
         } else {
             const html = createPostHtml(response.data);
-            $('.postsContainer').prepend(html);
-            textbox.val('');
-            button.prop('disabled', true);
+            const postsContainer = document.querySelector('.postsContainer');
+            postsContainer.innerHTML = html + postsContainer.innerHTML;
+            textbox.value = '';
+            currBtn.disabled = true;
         }
     });
 });
@@ -46,7 +60,8 @@ $('#replyModal').on('show.bs.modal', (event) => {
     $('#submitReplyButton').data('id', postId);
 
     $.get(`/api/posts/${postId}`, (response, status, xhr) => {
-        outputPosts(response.data, $('#originalPostContainer'));
+        const originalPostContainer = document.getElementById('originalPostContainer');
+        outputPosts(response.data, originalPostContainer);
     });
 });
 
@@ -58,19 +73,17 @@ $('#deletePostModal').on('show.bs.modal', (event) => {
     $('#deletePostButton').data('id', postId);
 });
 
-$('#deletePostButton').click((event) => {
+$(document).on('click', '#deletePostButton', async (event) => {
     const postId = $(event.target).data('id');
 
-    $.ajax({
-        url: `/api/posts/${postId}`,
-        type: 'DELETE',
-        success: (data, status, xhr) => {
-            if (xhr.status !== 200) {
-                console.error('Could not delete post');
-            }
-            location.reload();
-        },
+    const response = await fetch(`/api/posts/${postId}`, {
+        method: 'DELETE',
     });
+
+    if (response?.status !== 200) {
+        console.error('Failed to delete post');
+    }
+    location.reload();
 });
 
 $(document).on('click', '.likeButton', (event) => {
@@ -261,7 +274,7 @@ function createPostHtml(postData, largeFont = false) {
 }
 
 function outputPosts(postData, container) {
-    container.html('');
+    container.innerHTML = '';
 
     if (!Array.isArray(postData)) {
         postData = [postData];
@@ -269,33 +282,33 @@ function outputPosts(postData, container) {
 
     postData.forEach((post) => {
         const html = createPostHtml(post);
-        container.append(html);
+        container.innerHTML += html;
     });
 
     if (postData.length === 0) {
-        container.append(`<span class='noResults'>Nothing to show.</span>`);
+        container.innerHTML += `<span class='no-results'>Nothing to show.</span>`;
     }
 }
 
 function outputPostsWithReplies(postData, container) {
-    container.html('');
+    container.innerHTML = '';
 
     if (postData.replyTo?._id) {
         const html = createPostHtml(postData.replyTo);
-        container.append(html);
+        container.innerHTML += html;
     }
 
     // output main post replied to
     const html = createPostHtml(postData, true);
-    container.append(html);
+    container.innerHTML += html;
 
     postData?.replies.forEach((reply) => {
         const html = createPostHtml(reply);
-        container.append(html);
+        container.innerHTML += html;
     });
 
     if (postData.length === 0) {
-        container.append(`<span class='noResults'>Nothing to show.</span>`);
+        container.innerHTML += `<span class='no-results'>Nothing to show.</span>`;
     }
 }
 
