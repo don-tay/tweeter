@@ -16,6 +16,6 @@ jobs:
             - run: npm install -g yarn
             - name: Install dependencies, check formatting and build
               run: |
-                  yarn install
-                  yarn prettier --check .
+                  yarn install && \
+                  yarn prettier --check . && \
                   yarn build
