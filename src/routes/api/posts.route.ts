@@ -90,7 +90,7 @@ postsRouter.post(
     asyncHandler(async (req, res, next) => {
         const { content, replyTo } = req.body;
         const payload = { content, postedBy: req.session.user, replyTo };
-        const data = await (await Post.create(payload)).populate('postedBy').populate('replyTo').execPopulate();
+        const data = await (await Post.create(payload)).populate(['postedBy', 'replyTo']);
 
         res.status(201).json({ data });
     }),

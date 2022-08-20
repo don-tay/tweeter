@@ -1,6 +1,6 @@
 import { IsEmail, isEmpty, isNotEmpty, IsNotEmpty, IsOptional, IsString, Length, Matches } from 'class-validator';
 import express from 'express';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { PASSWORD_REGEX, USERNAME_REGEX } from '../constants';
 import { asyncHandler } from '../middlewares';
 import { validateModel } from '../utilities';
