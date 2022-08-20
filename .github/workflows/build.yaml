@@ -17,5 +17,5 @@ jobs:
             - name: Install dependencies, check formatting and build
               run: |
                   yarn install && \
-                  yarn prettier --check . && \
+                  yarn prettier --check src && \
                   yarn build
