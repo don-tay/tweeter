@@ -13,9 +13,8 @@ jobs:
               with:
                   node-version: '16'
                   check-latest: true
-            - run: npm install -g yarn
             - name: Install dependencies, check formatting and build
               run: |
-                  yarn install && \
-                  yarn prettier --check src && \
-                  yarn build
+                  npm install && \
+                  npm run prettier --check src && \
+                  npm run build

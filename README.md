@@ -23,7 +23,6 @@ Read on for detailed instructions.
 Global dependencies are listed as follows. See sections below for installation instructions for each dependency.
 
 -   Node.js v16.x
--   Yarn 2 (berry)
 -   MongoDB 4.4
 
 ### NodeJS Runtime Environment
@@ -52,14 +51,10 @@ To verify if NodeJS has been setup and running properly, run
 node -v
 ```
 
-### Yarn Package Manager
-
-Yarn 2 is the recommended package manager for Tweeter. See this [guide](https://yarnpkg.com/getting-started/install) for installation instructions.
-
 ### Install dependencies
 
 ```bash
-yarn install
+npm install
 ```
 
 ### Setting up MongoDB database
@@ -92,10 +87,10 @@ Once all global dependencies are set up and the `config/.env` file is populated,
 
 ```bash
 # Run in development
-yarn dev
+npm run dev
 
 # Build and run in production
-yarn build && yarn start
+npm run build && npm start
 ```
 
 ## License

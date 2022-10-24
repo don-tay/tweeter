@@ -3,4 +3,3 @@ dist
 coverage
 public/assets
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-.yarn
