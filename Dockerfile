@@ -1,5 +1,5 @@
 # --------------> The build image
-FROM node:16-alpine AS build
+FROM node:18-alpine AS build
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm ci && npm cache clean --force
@@ -8,7 +8,7 @@ COPY src ./src
 RUN npm run build
  
 # --------------> The production image
-FROM node:16-alpine
+FROM node:18-alpine
 RUN apk add dumb-init
 ENV NODE_ENV production
 WORKDIR /usr/src/app
